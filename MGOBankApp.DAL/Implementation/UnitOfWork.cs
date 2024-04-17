@@ -1,10 +1,7 @@
 ﻿using MGOBankApp.DAL.Data;
 using MGOBankApp.DAL.Repository;
-<<<<<<< HEAD
-=======
 using MGOBankApp.Domain.Entity;
 using Microsoft.AspNetCore.Identity;
->>>>>>> 392dccbe256d96c3f3f6442c97bef3c51f16a71c
 using System;
 using System.Collections.Generic;
 using System.Linq;

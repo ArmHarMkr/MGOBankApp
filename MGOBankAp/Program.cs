@@ -1,19 +1,10 @@
-<<<<<<< HEAD
-using MGOBankApp.DAL;
 using MGOBankApp.DAL.Implementation;
 using MGOBankApp.DAL.Repository;
-using Microsoft.EntityFrameworkCore;
-
-=======
 using Microsoft.EntityFrameworkCore;
 using MGOBankApp.Domain.Entity;
 using MGOBankApp.DAL.Data;
-using Microsoft.AspNetCore.Identity;
-using MGOBankApp.DAL.Repository;
-using MGOBankApp.DAL.Implementation;
 using MGOBank.Service.Interfaces;
 using MGOBank.Service.Implementations;
->>>>>>> 392dccbe256d96c3f3f6442c97bef3c51f16a71c
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
