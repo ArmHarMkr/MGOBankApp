@@ -1,0 +1,30 @@
+﻿@using MGOBankApp.Domain.Entity
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> userManager
+@model AppUser
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+@if (Model.CardEntity == null)
+{
+    <form asp-action="CreateCard" asp-controller="Home">
+        <select name="PaymentSystem" id="PaymentSystem">
+            @foreach (var paymentSystem in ViewBag.PaymentSystems)
+            {
+                <option value="@paymentSystem">@paymentSystem</option>
+            }
+        </select>
+        <button type="submit">Create Card</button>
+    </form>
+}
+else
+{
+    <p>You have a card</p>
+    <p>@Model.CardEntity.AccessibleMoney</p>
+    <p>@Model.CardEntity.CardNum</p>
+    <p>@Model.CardEntity.PaymentSystem</p>
+}
