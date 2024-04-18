@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MGOBankApp.Domain.Entity;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace MGOBankApp.Areas.Identity.Pages.Account
 {
@@ -119,6 +120,11 @@ namespace MGOBankApp.Areas.Identity.Pages.Account
                 {
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
+                }
+                if (result.IsNotAllowed)
+                {
+                    ModelState.AddModelError(string.Empty, "You are not allowed.");
+                    return Page();
                 }
                 else
                 {

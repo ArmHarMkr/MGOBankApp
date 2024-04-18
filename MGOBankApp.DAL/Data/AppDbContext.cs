@@ -15,6 +15,7 @@ namespace MGOBankApp.DAL.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<CardEntity> Cards { get; set; }
+        public DbSet<OrderTicketEntity> OrderTickets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

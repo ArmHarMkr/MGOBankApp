@@ -10,7 +10,7 @@ namespace MGOBank.Service.Implementations
 {
 	public class CardNumberGenerator : ICardNumberGenerator 
 	{
-		private LunaCounter _counter;
+		private LunaCounter _counter = new();
 		public string GenerateCardNumber(string paymentSystem)
 		{
 			paymentSystem = paymentSystem.ToLower();
@@ -33,12 +33,16 @@ namespace MGOBank.Service.Implementations
 			//our bank number
 			generatedCard += "077";
 			Random randomDigit = new Random();
-			for (int i = 0; i<12; i++)
+			for (int i = 0; i < 11; i++)
 			{
 				generatedCard += randomDigit.Next(10).ToString();
 			}
 
 			int lunaSum = _counter.LunaCounting(generatedCard);
+			if (lunaSum % 10 != 0)
+				generatedCard += (10 - lunaSum % 10).ToString();
+			else
+				generatedCard += "0";
 			return generatedCard;
 		}
 	}
