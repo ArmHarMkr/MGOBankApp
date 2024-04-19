@@ -5,6 +5,7 @@ using MGOBankApp.Domain.Entity;
 using MGOBankApp.DAL.Data;
 using MGOBank.Service.Interfaces;
 using MGOBank.Service.Implementations;
+using Microsoft.AspNetCore.Identity;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 

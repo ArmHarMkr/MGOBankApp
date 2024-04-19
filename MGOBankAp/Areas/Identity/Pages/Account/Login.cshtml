@@ -50,24 +50,25 @@
                     <div class="wrap-input100">
                         <input asp-for="Input.Email" class="input100" autocomplete="username" aria-required="true" />
                         <span asp-for="Input.Email" class="focus-input100" data-placeholder="Email"></span>
-                    
+                        <span asp-validation-for="Input.Email" class="text-danger small"></span>
                 </div>
 
                     <div class="wrap-input100">
-                       <span class="btn-show-pass">
+                        <span class="btn-show-pass">
                             <i class="zmdi zmdi-eye"></i>
                         </span>
-                        <input asp-for="Input.Password" class="input100 validate-input" type="password" autocomplete="current-password" aria-required="true" />
+                        <input asp-for="Input.Password" class="input100" type="password" aria-required="true" />
                         <span asp-for="Input.Password" class="focus-input100" data-placeholder="Password"></span>
-                </div>
+                        <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                        
+                    </div>
                 <div class="checkbox mb-3">
                         <label asp-for="Input.RememberMe" class="txt1">
                         <input class="m-l-2 form-check-input" asp-for="Input.RememberMe" />
                         @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
                 </div>
-                    <span style="display:block"asp-validation-for="Input.Email" class="text-danger small"></span>
-                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                   
                     <div class="container-login100-form-btn">
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
