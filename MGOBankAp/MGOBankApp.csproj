@@ -33,8 +33,4 @@
     <ProjectReference Include="..\MGOBankApp.Domain\MGOBankApp.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Identity\Data\" />
-  </ItemGroup>
-
 </Project>

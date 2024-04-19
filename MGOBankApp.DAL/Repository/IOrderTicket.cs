@@ -9,5 +9,8 @@ namespace MGOBankApp.DAL.Repository
 {
     public interface IOrderTicket : IRepository<OrderTicketEntity>
     {
+       Task BillService(AppUser user);
+       Task TaxService(AppUser user);
+       Task CreditService(AppUser user);
     }
 }
