@@ -1,23 +1,476 @@
-﻿@using MGOBankApp.ViewModels
+﻿@using MGOBankApp.Domain.Enum
+@using MGOBankApp.ViewModels
 @model TicketWindowViewModel
+<style type="text/css">
+    import url('https://fonts.googleapis.com/css?family=Oswald');
+    * {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        box-sizing: border-box
+    }
 
-@if(Model.AllOrders.Count() == 0)
-{
-    <p>No order found</p>
-}
-else
-{
-    @foreach (var order in Model.AllOrders)
+    body {
+        background-color: #dadde6;
+        font-family: arial
+    }
+
+    .fl-left {
+        float: left
+    }
+
+    .fl-right {
+        float: right
+    }
+
+    h1 {
+        text-transform: uppercase;
+        font-weight: 900;
+        border-left: 10px solid #fec500;
+        padding-left: 10px;
+        margin-bottom: 30px
+    }
+
+    .row {
+        overflow: hidden
+    }
+
+    .card {
+        display: table-row;
+        width: 90%;
+        background-color: #fff;
+        color: #989898;
+        margin-bottom: 10px;
+        font-family: 'Oswald', sans-serif;
+        text-transform: uppercase;
+        border-radius: 10px;
+        position: relative;
+        margin-left:auto;
+        margin-right: auto;
+    }
+
+        .card + .card {
+            margin-left: 2%
+        }
+
+    .date {
+        display: table-cell;
+        width: 25%;
+        position: relative;
+        text-align: center;
+        border-right: 2px dashed #dadde6
+    }
+
+        .date:before,
+        .date:after {
+            content: "";
+            display: block;
+            width: 30px;
+            height: 30px;
+            background-color: #DADDE6;
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            z-index: 1;
+            border-radius: 50%
+        }
+
+        .date:after {
+            top: auto;
+            bottom: -15px
+        }
+
+        .date time {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%)
+        }
+
+            .date time span {
+                display: block
+            }
+
+                .date time span:first-child {
+                    color: #2b2b2b;
+                    font-weight: 600;
+                    font-size: 250%
+                }
+
+                .date time span:last-child {
+                    text-transform: uppercase;
+                    font-weight: 600;
+                    margin-top: -10px
+                }
+
+    .card-cont {
+        display: table-cell;
+        width: 75%;
+        font-size: 85%;
+        padding: 10px 10px 30px 50px
+    }
+
+        .card-cont h3 {
+            color: #3C3C3C;
+            font-size: 130%
+        }
+
+   
+
+    .card-cont > div {
+        display: table-row
+    }
+
+    .card-cont .even-date i,
+    .card-cont .even-info i,
+    .card-cont .even-date time,
+    .card-cont .even-info p {
+        display: table-cell
+    }
+
+    .card-cont .even-date i,
+    .card-cont .even-info i {
+        padding: 5% 5% 0 0
+    }
+
+    .card-cont .even-info p {
+        padding: 30px 50px 0 0
+    }
+
+    .card-cont .even-date time span {
+        display: block
+    }
+
+    .card-cont button {
+        border:none;
+        display: block;
+        width: 80px;
+        height: 30px;
+        text-transform:uppercase;
+        background-color: #F8504C;
+        color: #fff;
+        text-align: center;
+        line-height: 30px;
+        border-radius: 5px;
+        position: absolute;
+        right: 10px;
+        bottom: 10px
+
+    }
+
+    .row:last-child .card:first-child .card-cont a {
+        background-color: #037FDD
+    }
+
+    .row:last-child .card:last-child .card-cont a {
+        background-color: #F8504C
+    }
+
+    media screen and (max-width: 860px) {
+        .card
+
     {
-        <p>@order.OrderTicketId</p>
-        <p>@order.OrderNumber</p>
-        <p>@order.OrderService.ToString()</p>
-        <p>@order.OrderDate.ToShortTimeString()</p>
-        <p>@order.AppUser.FullName</p>
-        <form asp-action="DeleteTicket" asp-controller="ServiceOrder" asp-route-id="@order.OrderTicketId">
-            <button type="submit">Delete ticket</button> @*TODO: remove this button*@
-        </form>
-        <br />
+        display: block;
+        float: none;
+        width: 100%;
+        margin-bottom: 10px
+    }
+
+    .card + .card {
+        margin-left: 0
+    }
+
+    .card-cont .even-date,
+    .card-cont .even-info {
+        font-size: 75%
+    }
+
+    }
+    /* site main */
+    .sitemain{
+        display:flex;
+        
+    }
+
+    .main-child1  {
+        width:78%;
+       
+    }
+
+    .main-child2 {
+        width: 20%;
+    }
+    .table-wrapper{
+    margin: 10px 70px 70px;
+}
+ /* for table */
+.fl-table {
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: normal;
+    border: none;
+    border-collapse: collapse;
+    width: auto;
+    max-width: 100%;
+    white-space: nowrap;
+    background-color: white;
+}
+
+.fl-table td, .fl-table th {
+    text-align: center;
+    padding: 8px;
+}
+
+.fl-table td {
+    border-right: 1px solid #f8f8f8;
+    font-size: 12px;
+}
+
+.fl-table thead th {
+    color: #ffffff;
+    background: #4FC3A1;
+}
+
+
+.fl-table thead th:nth-child(odd) {
+    color: #ffffff;
+    background: #324960;
+}
+
+.fl-table tr:nth-child(even) {
+    background: #F8F8F8;
+}
+
+/* Responsive */
+
+media (max-width: 767px) {
+    .fl-table {
+        display: block;
+        width: 100%;
+    }
+    .table-wrapper:before{
+        content: "Scroll horizontally >";
+        display: block;
+        text-align: right;
+        font-size: 11px;
+        color: white;
+        padding: 0 0 10px;
+    }
+    .fl-table thead, .fl-table tbody, .fl-table thead th {
+        display: block;
+    }
+    .fl-table thead th:last-child{
+        border-bottom: none;
+    }
+    .fl-table thead {
+        float: left;
+    }
+    .fl-table tbody {
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+    }
+    .fl-table td, .fl-table th {
+        padding: 20px .625em .625em .625em;
+        height: 60px;
+        vertical-align: middle;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 120px;
+        font-size: 13px;
+        text-overflow: ellipsis;
+    }
+    .fl-table thead th {
+        text-align: left;
+        border-bottom: 1px solid #f7f7f9;
+    }
+    .fl-table tbody tr {
+        display: table-cell;
+    }
+    .fl-table tbody tr:nth-child(odd) {
+        background: none;
+    }
+    .fl-table tr:nth-child(even) {
+        background: transparent;
+    }
+    .fl-table tr td:nth-child(odd) {
+        background: #F8F8F8;
+        border-right: 1px solid #E6E4E4;
+    }
+    .fl-table tr td:nth-child(even) {
+        border-right: 1px solid #E6E4E4;
+    }
+    .fl-table tbody td {
+        display: block;
+        text-align: center;
+    }
+}
+</style>
+@* <section class="container">
+    <h1>Events</h1>
+    <div class="row">
+        <article class="card fl-left">
+            <section class="date">
+                <time datetime="23th feb">
+                    <span>23</span><span>feb</span>
+                </time>
+            </section>
+            <section class="card-cont">
+                <small>dj khaled</small>
+                <h3>live in sydney</h3>
+                <div class="even-date">
+                    <i class="fa fa-calendar"></i>
+                    <time>
+                        <span>wednesday 28 december 2014</span>
+                        <span>08:55pm to 12:00 am</span>
+                    </time>
+                </div>
+                <div class="even-info">
+                    <i class="fa fa-map-marker"></i>
+                    <p>
+                        nexen square for people australia, sydney
+                    </p>
+                </div>
+                <a href="#">tickets</a>
+            </section>
+        </article>
+
+        <article class="card fl-left">
+            <section class="date">
+                <time datetime="23th feb">
+                    <span>23</span><span>feb</span>
+                </time>
+            </section>
+            <section class="card-cont">
+                <small>dj khaled</small>
+                <h3>corner obsest program</h3>
+                <div class="even-date">
+                    <i class="fa fa-calendar"></i>
+                    <time>
+                        <span>wednesday 28 december 2014</span>
+                        <span>08:55pm to 12:00 am</span>
+                    </time>
+                </div>
+                <div class="even-info">
+                    <i class="fa fa-map-marker"></i>
+                    <p>
+                        nexen square for people australia, sydney
+                    </p>
+                </div>
+                <a href="#">tickets</a>
+            </section>
+        </article>
+    </div>
+    <div class="row">
+        <article class="card fl-left">
+            <section class="date">
+                <time datetime="23th feb">
+                    <span>23</span><span>feb</span>
+                </time>
+            </section>
+            <section class="card-cont">
+                <small>dj khaled</small>
+                <h3>music kaboom festivel</h3>
+                <div class="even-date">
+                    <i class="fa fa-calendar"></i>
+                    <time>
+                        <span>wednesday 28 december 2014</span>
+                        <span>08:55pm to 12:00 am</span>
+                    </time>
+                </div>
+                <div class="even-info">
+                    <i class="fa fa-map-marker"></i>
+                    <p>
+                        nexen square for people australia, sydney
+                    </p>
+                </div>
+                <a href="#">booked</a>
+            </section>
+        </article>
+        <article class="card fl-left">
+            <section class="date">
+                <time datetime="23th feb">
+                    <span>23</span><span>feb</span>
+                </time>
+            </section>
+            <section class="card-cont">
+                <small>dj khaled</small>
+                <h3>hello dubai festivel</h3>
+                <div class="even-date">
+                    <i class="fa fa-calendar"></i>
+                    <time>
+                        <span>wednesday 28 december 2014</span>
+                        <span>08:55pm to 12:00 am</span>
+                    </time>
+                </div>
+                <div class="even-info">
+                    <i class="fa fa-map-marker"></i>
+                    <p>
+                        nexen square for people australia, sydney
+                    </p>
+                </div>
+                <a href="#">cancel</a>
+            </section>
+        </article>
+    </div>
+
+</section> *@
+@{
+    string WhatTheMonth(int Month)
+    {
+        switch (Month)
+        {
+            case 1:
+                return "JANUARY";
+            case 2:
+                return "FEBRUARY";
+            case 3:
+                return "MARCH";
+            case 4:
+                return "APRIL";
+            case 5:
+                return "MAY";
+            case 6:
+                return "JUNE";
+            case 7:
+                return "JULY";
+            case 8:
+                return "AUGUST";
+            case 9:
+                return "SEPTEMBER";
+            case 10:
+                return "OCTOBER";
+            case 11:
+                return "NOVEMBER";
+            case 12:
+                return "DECEMBER";
+
+
+            default:
+                return "Month";
+
+        }
+    }
+    string SetOrderServiceType(Services service)
+    {
+        string type = ""; // A,B,C
+        switch (service.ToString())
+        {
+            case "Bill":
+                type = "A";
+                break;
+            case "Tax":
+                type = "B";
+                break;
+            case "Credit":
+                type = "C";
+                break;
+        }
+        return type;
     }
 }
 <form asp-action="AddBillService" asp-controller="ServiceOrder">
@@ -30,9 +483,140 @@ else
 <form asp-action="AddCreditService" asp-controller="ServiceOrder">
     <button type="submit">Order Credit Service</button>
 </form>
+<div class="sitemain">
+    <div class="main-child1">
+
+    
+@if (Model.AllOrders.Count() == 0)
+{
+    <p>No order found</p>
+}
+else
+{
+    @foreach (var order in Model.AllOrders)
+    {
+        <div class="row">
+        <article class="card fl-left">
+            <section class="date">
+                <time datetime="23th feb">
+                    <span>@order.OrderDate.Day</span><span>@WhatTheMonth(@order.OrderDate.Month).Substring(0,3)</span>
+                </time>
+            </section>
+            <section class="card-cont">
+                <small>@order.OrderService.ToString()</small>
+                <h3>@SetOrderServiceType(@order.OrderService)@order.OrderNumber</h3>
+                <div class="even-date">
+                    <i class="fa fa-calendar"></i>
+                    <time>
+                        <span> @order.OrderDate.DayOfWeek @order.OrderDate.Day @WhatTheMonth(@order.OrderDate.Month) @order.OrderDate.Year</span>
+                        <span>@order.OrderDate.ToShortTimeString() to @order.OrderDate.AddMinutes(4).ToShortTimeString()</span>
+                    </time>
+                </div>
+                <div class="even-info">
+                    <i class="fa fa-map-marker"></i>
+                    <p>
+                        @order.AppUser.FullName,thanks for waiting
+                    </p>
+                </div>
+                <form asp-action="DeleteTicket" asp-controller="ServiceOrder" asp-route-id="@order.OrderTicketId">
+                <button type="submit" href="#">delete</button>
+                </form>
+            </section>
+        </article>
+        </div>
+
+        @* <p>@order.OrderTicketId</p>
+        <p>@order.OrderNumber</p>
+        <p>@order.OrderService.ToString()</p>
+        <p>@order.OrderDate.ToShortTimeString()</p>
+        <p>@order.AppUser.FullName</p>
+        <br /> *@
+    }
+}
+    </div>
+    <div class="main-child2">
+
+            <table class="fl-table">
+                <thead>
+                    <tr>
+                        <th>Header 1</th>
+                        <th>Header 2</th>
+                        <th>Header 3</th>
+                        <th>Header 4</th>
+                        <th>Header 5</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Content 1</td>
+                        <td>Content 1</td>
+                        <td>Content 1</td>
+                        <td>Content 1</td>
+                        <td>Content 1</td>
+                    </tr>
+                    <tr>
+                        <td>Content 2</td>
+                        <td>Content 2</td>
+                        <td>Content 2</td>
+                        <td>Content 2</td>
+                        <td>Content 2</td>
+                    </tr>
+                    <tr>
+                        <td>Content 3</td>
+                        <td>Content 3</td>
+                        <td>Content 3</td>
+                        <td>Content 3</td>
+                        <td>Content 3</td>
+                    </tr>
+                    <tr>
+                        <td>Content 4</td>
+                        <td>Content 4</td>
+                        <td>Content 4</td>
+                        <td>Content 4</td>
+                        <td>Content 4</td>
+                    </tr>
+                    <tr>
+                        <td>Content 5</td>
+                        <td>Content 5</td>
+                        <td>Content 5</td>
+                        <td>Content 5</td>
+                        <td>Content 5</td>
+                    </tr>
+                    <tr>
+                        <td>Content 6</td>
+                        <td>Content 6</td>
+                        <td>Content 6</td>
+                        <td>Content 6</td>
+                        <td>Content 6</td>
+                    </tr>
+                    <tr>
+                        <td>Content 7</td>
+                        <td>Content 7</td>
+                        <td>Content 7</td>
+                        <td>Content 7</td>
+                        <td>Content 7</td>
+                    </tr>
+                    <tr>
+                        <td>Content 8</td>
+                        <td>Content 8</td>
+                        <td>Content 8</td>
+                        <td>Content 8</td>
+                        <td>Content 8</td>
+                    </tr>
+                    <tr>
+                        <td>Content 9</td>
+                        <td>Content 9</td>
+                        <td>Content 9</td>
+                        <td>Content 9</td>
+                        <td>Content 9</td>
+                    </tr>
+                <tbody>
+            </table>
+        </div>
+    </div>
 
 <h1>Bills</h1>
-@foreach(var bill in Model.BillTicketWindow)
+@foreach (var bill in Model.BillTicketWindow)
 {
     <p>@bill.OrderTicketId</p>
     <p>@bill.OrderNumber</p>
@@ -52,7 +636,7 @@ else
 }
 
 <h1>Credit</h1>
-@foreach (var credit in Model.TaxTicketWindow)
+@foreach (var credit in Model.CreditTicketWindow)
 {
     <p>@credit.OrderTicketId</p>
     <p>@credit.OrderNumber</p>
