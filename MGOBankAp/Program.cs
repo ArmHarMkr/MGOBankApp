@@ -13,14 +13,15 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(conn
 
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
 
+// Add services to the container.
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IOrderTicket, OrderTicket>();
+builder.Services.AddScoped<IOrderTicketRepository, OrderTicketRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ILunaCounter, LunaCounter>();
 builder.Services.AddTransient<ICardNumberGenerator, CardNumberGenerator>();
+//Adding background Service
+builder.Services.AddHostedService<OrderTicketUpdateService>();
 
-
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

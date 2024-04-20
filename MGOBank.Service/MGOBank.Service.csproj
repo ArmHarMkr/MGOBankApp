@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MGOBankApp.DAL\MGOBankApp.DAL.csproj" />
     <ProjectReference Include="..\MGOBankApp.Domain\MGOBankApp.Domain.csproj" />
   </ItemGroup>
 

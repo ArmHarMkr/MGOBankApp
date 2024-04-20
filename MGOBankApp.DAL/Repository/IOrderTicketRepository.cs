@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MGOBankApp.DAL.Repository
 {
-    public interface IOrderTicket : IRepository<OrderTicketEntity>
+    public interface IOrderTicketRepository : IRepository<OrderTicketEntity>
     {
        Task BillService(AppUser user);
        Task TaxService(AppUser user);

@@ -13,6 +13,19 @@ else
         <p>@order.OrderNumber</p>
         <p>@order.OrderService.ToString()</p>
         <p>@order.AppUser.FullName</p>
+        <form asp-action="DeleteTicket" asp-controller="ServiceOrder" asp-route-id="@order.OrderTicketId">
+            <button type="submit">Delete ticket</button> @*TODO: remove this button*@
+        </form>
         <br />
     }
 }
+<form asp-action="AddBillService" asp-controller="ServiceOrder">
+    <button type="submit">Order Bill Service</button>
+</form>
+
+<form asp-action="AddTaxService" asp-controller="ServiceOrder">
+    <button type="submit">Order Tax Service</button>
+</form>
+<form asp-action="AddCreditService" asp-controller="ServiceOrder">
+    <button type="submit">Order Credit Service</button>
+</form>

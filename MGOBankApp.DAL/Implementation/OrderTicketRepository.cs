@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 
 namespace MGOBankApp.DAL.Implementation;
 
-public class OrderTicket : Repository<OrderTicketEntity>, IOrderTicket
+public class OrderTicketRepository : Repository<OrderTicketEntity>, IOrderTicketRepository
 {
     private readonly AppDbContext _db;
-    public OrderTicket(AppDbContext db) : base(db)
+
+    public OrderTicketRepository(AppDbContext db) : base(db)
     {
         _db = db;
     }

@@ -9,6 +9,7 @@ namespace MGOBankApp.DAL.Repository
     public interface IUnitOfWork
     {
         IUserRepository User { get; }
+        IOrderTicketRepository OrderTicket { get; }
         Task Save();
     }
 }

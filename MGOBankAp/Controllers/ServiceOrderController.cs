@@ -12,19 +12,14 @@ namespace MGOBankApp.Controllers
         private readonly AppDbContext _db;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<AppUser> _userManager;
-        private readonly IOrderTicket _orderTicket;
+        private readonly IOrderTicketRepository _orderTicket;
 
-        public ServiceOrderController(AppDbContext db, IUnitOfWork unitOfWork, UserManager<AppUser> userManager, IOrderTicket orderTicket)
+        public ServiceOrderController(AppDbContext db, IUnitOfWork unitOfWork, UserManager<AppUser> userManager, IOrderTicketRepository orderTicket)
         {
             _db = db;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _orderTicket = orderTicket;
-        }
-
-        public IActionResult AllServices()
-        {
-            return View();
         }
 
         public async Task<IActionResult> AllOrders()
@@ -80,6 +75,18 @@ namespace MGOBankApp.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPost("DeleteTicket")]
+        public async Task<IActionResult> DeleteTicket(string? id)
+        {
+            OrderTicketEntity orderFromDb = _unitOfWork.OrderTicket.Get(o => o.OrderTicketId == id);
+            if (orderFromDb != null)
+            {
+                _unitOfWork.OrderTicket.Remove(orderFromDb);
+                await _unitOfWork.Save();
+            }
+            return RedirectToAction("AllOrders", "ServiceOrder");
         }
     }
 }
