@@ -1,6 +1,7 @@
 ﻿using MGOBankApp.DAL.Data;
 using MGOBankApp.DAL.Repository;
 using MGOBankApp.Domain.Entity;
+using MGOBankApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +29,20 @@ namespace MGOBankApp.Controllers
             IEnumerable<OrderTicketEntity> orders = _db.OrderTickets
                                                        .Include(o => o.AppUser)
                                                        .Where(o => o.IsDone == false)
-                                                       .Where(o => o.AppUser == currentUser);
-            return View(orders);
+                                                       .OrderBy(o => o.OrderDate);
+            TicketWindowViewModel ticketWindowVM = new();
+            ticketWindowVM.AllOrders = orders.Where(o => o.AppUser == currentUser);
+            foreach (var order in orders)
+            {
+                if (order.OrderService.ToString().ToLower() == "bill")
+                    ticketWindowVM.BillTicketWindow.Add(order);
+                else if(order.OrderService.ToString().ToLower() == "credit")
+                    ticketWindowVM.CreditTicketWindow.Add(order);
+                else
+                    ticketWindowVM.TaxTicketWindow.Add(order);
+
+            }   
+            return View(ticketWindowVM);
         }
 
         [HttpPost("AddBillService")]

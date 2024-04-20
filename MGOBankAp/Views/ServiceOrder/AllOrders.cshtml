@@ -1,17 +1,18 @@
-﻿@using MGOBankApp.Domain.Entity
-@model IEnumerable<OrderTicketEntity>
+﻿@using MGOBankApp.ViewModels
+@model TicketWindowViewModel
 
-@if(Model.Count() == 0)
+@if(Model.AllOrders.Count() == 0)
 {
     <p>No order found</p>
 }
 else
 {
-    @foreach (OrderTicketEntity order in Model)
+    @foreach (var order in Model.AllOrders)
     {
         <p>@order.OrderTicketId</p>
         <p>@order.OrderNumber</p>
         <p>@order.OrderService.ToString()</p>
+        <p>@order.OrderDate.ToShortTimeString()</p>
         <p>@order.AppUser.FullName</p>
         <form asp-action="DeleteTicket" asp-controller="ServiceOrder" asp-route-id="@order.OrderTicketId">
             <button type="submit">Delete ticket</button> @*TODO: remove this button*@
@@ -29,3 +30,33 @@ else
 <form asp-action="AddCreditService" asp-controller="ServiceOrder">
     <button type="submit">Order Credit Service</button>
 </form>
+
+<h1>Bills</h1>
+@foreach(var bill in Model.BillTicketWindow)
+{
+    <p>@bill.OrderTicketId</p>
+    <p>@bill.OrderNumber</p>
+    <p>@bill.OrderService.ToString()</p>
+    <p>@bill.OrderDate.ToShortTimeString()</p>
+    <p>@bill.AppUser.FullName</p>
+}
+
+<h1>Taxes</h1>
+@foreach (var tax in Model.TaxTicketWindow)
+{
+    <p>@tax.OrderTicketId</p>
+    <p>@tax.OrderNumber</p>
+    <p>@tax.OrderService.ToString()</p>
+    <p>@tax.OrderDate.ToShortTimeString()</p>
+    <p>@tax.AppUser.FullName</p>
+}
+
+<h1>Credit</h1>
+@foreach (var credit in Model.TaxTicketWindow)
+{
+    <p>@credit.OrderTicketId</p>
+    <p>@credit.OrderNumber</p>
+    <p>@credit.OrderService.ToString()</p>
+    <p>@credit.OrderDate.ToShortTimeString()</p>
+    <p>@credit.AppUser.FullName</p>
+}
