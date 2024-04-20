@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using MGOBankApp.Domain.Entity
+@using MGOBankApp.Domain.Roles
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,6 +30,55 @@
                     </ul>
                 </div>
             </div>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                var currentUser = await UserManager.GetUserAsync(User);
+                var isAdmin = await UserManager.IsInRoleAsync(currentUser, SD.Role_Admin);
+                var isTaxEmployee = await UserManager.IsInRoleAsync(currentUser, SD.Role_TaxEmployee);
+                var isBillEmployee = await UserManager.IsInRoleAsync(currentUser, SD.Role_BillEmployee);
+                var isCreditEmployee = await UserManager.IsInRoleAsync(currentUser, SD.Role_CreditEmployee);
+                var isCustomer = await UserManager.IsInRoleAsync(currentUser, SD.Role_Customer);
+
+                @if (isAdmin)
+                {
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Admin" asp-action="AllUsers" asp-controller="Employee">Role Management</a>
+                        </li>
+                        @*Adding other pages only for admin*@
+                    </ul>
+                }
+                @if (isTaxEmployee)
+                {
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Employee" asp-action="TaxServices" asp-controller="Employee">Role Management</a>
+                        </li>
+                        @*TODO: Change action names and add actions*@
+                        @*Adding other pages only for tax managers*@
+                    </ul>
+                }
+                @if (isBillEmployee)
+                {
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Employee" asp-action="BillServices" asp-controller="Employee">Role Management</a>
+                        </li>
+                        @*TODO: Change action names and add actions*@
+                        @*Adding other pages only for bill managers*@
+                    </ul>
+                }
+                @if (isCreditEmployee)
+                {
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Employee" asp-action="CreditServices" asp-controller="Employee">Role Management</a>
+                        </li>
+                        @*TODO: Change action names and add actions*@
+                        @*Adding other pages only for credit managers*@
+                    </ul>
+                }
+            }
             <partial name="_LoginPartial.cshtml"></partial>
         </nav>
     </header>

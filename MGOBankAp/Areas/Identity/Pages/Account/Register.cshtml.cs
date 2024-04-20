@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using MGOBankApp.Domain.Entity;
 using MGOBankApp.DAL.Repository;
+using MGOBankApp.Domain.Roles;
 
 namespace MGOBankApp.Areas.Identity.Pages.Account
 {
@@ -20,6 +21,7 @@ namespace MGOBankApp.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<AppUser> _userStore;
         private readonly IUserEmailStore<AppUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
@@ -29,6 +31,7 @@ namespace MGOBankApp.Areas.Identity.Pages.Account
         public RegisterModel(
             UserManager<AppUser> userManager,
             IUserStore<AppUser> userStore,
+            RoleManager<IdentityRole> roleManager,
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
@@ -37,6 +40,7 @@ namespace MGOBankApp.Areas.Identity.Pages.Account
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
+            _roleManager = roleManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
@@ -124,6 +128,11 @@ namespace MGOBankApp.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    var defaultRole = _roleManager.FindByNameAsync(SD.Role_Customer).Result;
+                    if (defaultRole != null)
+                    {
+                        IdentityResult roleResult = await _userManager.AddToRoleAsync(user, defaultRole.Name);
+                    }
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);

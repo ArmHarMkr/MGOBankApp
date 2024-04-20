@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Microsoft\**" />
+    <EmbeddedResource Remove="Microsoft\**" />
+    <None Remove="Microsoft\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.4" />
 
@@ -23,10 +29,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Microsoft\" />
   </ItemGroup>
 
 </Project>
