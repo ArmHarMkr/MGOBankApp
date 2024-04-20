@@ -4,16 +4,10 @@
     ViewData["Title"] = "Register confirmation";
     Layout = null;
 }
+<link rel="stylesheet" type="text/css" href="~/css/main.css">
 
-<h1>@ViewData["Title"]</h1>
 @{
-    if (@Model.DisplayConfirmAccountLink)
-    {
-<p>
-    This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-    Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
-</p>
-<style>
+    <style>
 body{
     background-color:#f2f2f2;
 }
@@ -27,7 +21,19 @@ body{
                 -webkit-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
                 -o-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
                 -ms-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
-}</style>
+}
+
+            #confirmation : hover{
+                color:white;
+            }
+            #confirmation{
+            color:white;
+            text-decoration:none;
+            }</style>
+    if (@Model.DisplayConfirmAccountLink)
+    {
+<div class="limiter">
+<div class="container-login100">
 <table width="100%" height="100%"  cellspacing="0" cellpadding="0" border="0">
     <tbody>
         <tr>
@@ -59,16 +65,19 @@ body{
                                                     <tbody>
                                                         <tr>
                                                             <td class="table-col-td" width="378" style="font-family: Arial, sans-serif; line-height: 19px; color: #444444; font-size: 13px; font-weight: normal; width: 378px;" valign="top" align="left">
-                                                                <table class="header-row" width="378" cellspacing="0" cellpadding="0" border="0" style="table-layout: fixed;">
+                                                                <table class="header-row" width="378" cellspacing="0" cellpadding="0" border="0" style="table-layout: fixed; margin-bottom:15px;">
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td class="header-row-td" width="378" style="font-family: Arial, sans-serif; font-weight: normal; line-height: 19px; color: #478fca; margin: 0px; font-size: 18px; padding-bottom: 10px; padding-top: 15px;" valign="top" align="left">Thank you for registering with us!</td>
+                                                                                    <td class="header-row-td" width="378" style="font-family: Arial, sans-serif; font-weight: normal; line-height: 19px; color: #478fca; margin: 0px; font-size: 18px; padding-bottom: 10px; padding-top: 15px;" valign="top" align="left"><span class="login100-form-title small">Thank you for registering with us!</span></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
-                                                                <div style="font-family: Arial, sans-serif; line-height: 20px; color: #444444; font-size: 13px;">
-                                                                    <b style="color: #777777;">We are excited to have you join us in MGO Bank users community</b>
-                                                                    <br> Please confirm your registration to continue
+                                                                        <div class="text-center" style="font-family: Arial, sans-serif; line-height: 20px; color: #444444; font-size: 13px;">
+                                                                            <span style="font-weight:bold;" class="txt1">
+                                                                               We are excited to have you join us in MGO Bank users community
+                                                                            </span>
+                                                                    
+                                                                            <br><span class="txt1">Please confirm your registration to continue</span>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -118,7 +127,14 @@ body{
                                                         <tr>
                                                             <td class="table-col-td" width="378" style="font-family: Arial, sans-serif; line-height: 19px; color: #444444; font-size: 13px; font-weight: normal; width: 378px;" valign="top" align="left">
                                                                 <div style="font-family: Arial, sans-serif; line-height: 19px; color: #444444; font-size: 13px; text-align: center;">
-                                                                    <a href="#" style="color: #ffffff; text-decoration: none; margin: 0px; text-align: center; vertical-align: baseline; border: 4px solid #6fb3e0; padding: 4px 9px; font-size: 15px; line-height: 21px; background-color: #6fb3e0;">&nbsp; Confirm &nbsp;</a>
+                                                                            <div class="container-login100-form-btn">
+                                                                                <div class="wrap-login100-form-btn">
+                                                                                    <div class="login100-form-bgbtn"></div>
+                                                                                            <a href="@Model.EmailConfirmationUrl" id="confirmation" type="submit" class="login100-form-btn">
+                                                                                        Confirm
+                                                                                    </a>    
+                                                                                </div>
+                                                                            </div>
                                                                 </div>
                                                                 <table class="table-space" height="16" style="height: 16px; font-size: 0px; line-height: 0; width: 378px; background-color: #ffffff;" width="378" bgcolor="#FFFFFF" cellspacing="0" cellpadding="0" border="0">
                                                                     <tbody>
@@ -156,7 +172,7 @@ body{
                                                                     <tbody>
                                                                         <tr>
                                                                             <td width="100%" align="center" bgcolor="#ffffff" style="font-family: Arial, sans-serif; line-height: 24px; color: #bbbbbb; font-size: 13px; font-weight: normal; text-align: center; padding: 9px; border-width: 1px 0px 0px; border-style: solid; border-color: #e3e3e3; background-color: #ffffff;" valign="top">
-                                                                                <a href="#" style="color: #428bca; text-decoration: none; background-color: transparent;">Bootdey.com &copy; 2016</a>
+                                                                                                <a asp-page="./Login" style="color: #428bca; text-decoration: none; background-color: transparent;">Mgobank.com &copy; 2024</a>
                                                                                 <br>
                                                                                 <a href="#" style="color: #478fca; text-decoration: none; background-color: transparent;">twitter</a> .
                                                                                 <a href="#" style="color: #5b7a91; text-decoration: none; background-color: transparent;">facebook</a> .
@@ -195,6 +211,8 @@ body{
         </tr>
     </tbody>
 </table>
+</div>
+</div>
     }
     else
     {
