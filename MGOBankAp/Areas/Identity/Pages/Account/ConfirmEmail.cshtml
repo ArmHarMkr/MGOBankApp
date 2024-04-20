@@ -4,6 +4,16 @@
     ViewData["Title"] = "Confirm email";
     Layout = null;
 }
-
-<h1>@ViewData["Title"]</h1>
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/MGOBankAp.styles.css" asp-append-version="true" />
+<link rel="stylesheet" type="text/css" href="~/css/util.css">
+<link rel="stylesheet" type="text/css" href="~/css/main.css">
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100" style="width:30%;">
 <partial name="_StatusMessage" model="Model.StatusMessage" />
+            <a asp-page="./Login">Log In</a>
+</div>
+</div>
+</div>
