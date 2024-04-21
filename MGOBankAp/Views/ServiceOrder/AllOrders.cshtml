@@ -16,7 +16,7 @@
     }
 
     body {
-        background-color: #dadde6;
+        background-color: #ebebeb;
         font-family: arial
     }
 
@@ -63,7 +63,7 @@
         width: 25%;
         position: relative;
         text-align: center;
-        border-right: 2px dashed #dadde6
+        border-right: 2px dashed #ebebeb
     }
 
         .date:before,
@@ -72,7 +72,7 @@
             display: block;
             width: 30px;
             height: 30px;
-            background-color: #DADDE6;
+            background-color: #ebebeb;
             position: absolute;
             top: -15px;
             right: -15px;
@@ -196,6 +196,7 @@
     /* site main */
     .sitemain {
         display: flex;
+        margin-top:15px;
     }
 
     .main-child1 {
@@ -239,12 +240,14 @@
 
 
             .fl-table thead th:nth-child(odd) {
+                width:75%;
                 color: #ffffff;
                 background: #324960;
             }
 
         .fl-table tr:nth-child(even) {
             background: #F8F8F8;
+            width: 25%;
         }
 
     /* Responsive */
@@ -307,19 +310,23 @@
 
         .fl-table tbody tr:nth-child(odd) {
             background: none;
+            width:75%;
         }
 
     .fl-table tr:nth-child(even) {
         background: transparent;
+        width: 25%;
     }
 
     .fl-table tr td:nth-child(odd) {
         background: #F8F8F8;
+        width: 75%;
         border-right: 1px solid #E6E4E4;
     }
 
     .fl-table tr td:nth-child(even) {
         border-right: 1px solid #E6E4E4;
+        width: 25%;
     }
 
     .fl-table tbody td {
@@ -328,6 +335,34 @@
     }
 
     }
+
+    .secondul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #ebebeb;
+        display:flex;
+        justify-content: center;
+    }
+
+    .secondul li {
+       justify-content:center;
+    }
+
+    .secondul li button {
+            display: block;
+            color: white;
+            background-color: #4FC3A1;
+            text-align: center;
+            border:none;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+                .secondul li button:hover {
+                    background-color: #34826b;
+            }
 </style>
 @* <section class="container">
     <h1>Events</h1>
@@ -495,34 +530,32 @@
 
 }
 
+<ul class="secondul">
+    <li>
+        <form asp-action="AddBillService" asp-controller="ServiceOrder">
+            <button type="submit">Order Bill Service</button>
+        </form>
+    </li>
+    <li>
+        <form asp-action="AddTaxService" asp-controller="ServiceOrder">
+            <button type="submit">Order Tax Service</button>
+        </form>
+    </li>
+    <li>
+        <form asp-action="AddCreditService" asp-controller="ServiceOrder">
+            <button type="submit">Order Credit Service</button>
+        </form>
+    </li>
+</ul>
 
-<form asp-action="DeleteAll" asp-controller="ServiceOrder">
-    <button type="submit">Delete all order tickets</button>
-</form>
-
-
-
-<form asp-action="AddBillService" asp-controller="ServiceOrder">
-    <button type="submit">Order Bill Service</button>
-</form>
-
-<form asp-action="AddTaxService" asp-controller="ServiceOrder">
-    <button type="submit">Order Tax Service</button>
-</form>
-<form asp-action="AddCreditService" asp-controller="ServiceOrder">
-    <button type="submit">Order Credit Service</button>
-</form>
 <div class="sitemain">
     <div class="main-child1">
 
 
 
-        @if (Model.AllOrders.Count() == 0)
+        @if (Model.AllOrders.Count() != 0)
         {
-            <p>No order found</p>
-        }
-        else
-        {
+        
             @foreach (var order in Model.AllOrders)
             {
                 <div class="row">
@@ -562,108 +595,30 @@
         <table class="fl-table">
             <thead>
                 <tr>
-                    <th>Header 1</th>
-                    <th>Header 2</th>
-                    <th>Header 3</th>
-                    <th>Header 4</th>
-                    <th>Header 5</th>
+                    <th>Client Name</th>
+                    <th>Ticket</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Content 1</td>
-                    <td>Content 1</td>
-                    <td>Content 1</td>
-                    <td>Content 1</td>
-                    <td>Content 1</td>
-                </tr>
-                <tr>
-                    <td>Content 2</td>
-                    <td>Content 2</td>
-                    <td>Content 2</td>
-                    <td>Content 2</td>
-                    <td>Content 2</td>
-                </tr>
-                <tr>
-                    <td>Content 3</td>
-                    <td>Content 3</td>
-                    <td>Content 3</td>
-                    <td>Content 3</td>
-                    <td>Content 3</td>
-                </tr>
-                <tr>
-                    <td>Content 4</td>
-                    <td>Content 4</td>
-                    <td>Content 4</td>
-                    <td>Content 4</td>
-                    <td>Content 4</td>
-                </tr>
-                <tr>
-                    <td>Content 5</td>
-                    <td>Content 5</td>
-                    <td>Content 5</td>
-                    <td>Content 5</td>
-                    <td>Content 5</td>
-                </tr>
-                <tr>
-                    <td>Content 6</td>
-                    <td>Content 6</td>
-                    <td>Content 6</td>
-                    <td>Content 6</td>
-                    <td>Content 6</td>
-                </tr>
-                <tr>
-                    <td>Content 7</td>
-                    <td>Content 7</td>
-                    <td>Content 7</td>
-                    <td>Content 7</td>
-                    <td>Content 7</td>
-                </tr>
-                <tr>
-                    <td>Content 8</td>
-                    <td>Content 8</td>
-                    <td>Content 8</td>
-                    <td>Content 8</td>
-                    <td>Content 8</td>
-                </tr>
-                <tr>
-                    <td>Content 9</td>
-                    <td>Content 9</td>
-                    <td>Content 9</td>
-                    <td>Content 9</td>
-                    <td>Content 9</td>
-                </tr>
+                @{
+                    int limit = Model.AllUsersOrders.Count;
+                    var orders = Model.AllUsersOrders;
+                }
+                @if(Model.AllUsersOrders.Count!=0){
+                @for(int i = 0; i < 10; i++)
+                {
+                        @if (i < limit)
+                        {
+                            <tr>
+
+                        <td>@orders[i].AppUser.FullName</td>
+                        <td>@SetOrderServiceType(@orders[i].OrderService)@orders[i].OrderNumber</td>
+                    </tr>
+                    }
+                }
+                }
             <tbody>
         </table>
     </div>
 </div>
 
-<h1>Bills</h1>
-@foreach (var bill in Model.BillTicketWindow)
-{
-    <p>@bill.OrderTicketId</p>
-    <p>@bill.OrderNumber</p>
-    <p>@bill.OrderService.ToString()</p>
-    <p>@bill.OrderDate.ToShortTimeString()</p>
-    <p>@bill.AppUser.FullName</p>
-}
-
-<h1>Taxes</h1>
-@foreach (var tax in Model.TaxTicketWindow)
-{
-    <p>@tax.OrderTicketId</p>
-    <p>@tax.OrderNumber</p>
-    <p>@tax.OrderService.ToString()</p>
-    <p>@tax.OrderDate.ToShortTimeString()</p>
-    <p>@tax.AppUser.FullName</p>
-}
-
-<h1>Credit</h1>
-@foreach (var credit in Model.CreditTicketWindow)
-{
-    <p>@credit.OrderTicketId</p>
-    <p>@credit.OrderNumber</p>
-    <p>@credit.OrderService.ToString()</p>
-    <p>@credit.OrderDate.ToShortTimeString()</p>
-    <p>@credit.AppUser.FullName</p>
-}

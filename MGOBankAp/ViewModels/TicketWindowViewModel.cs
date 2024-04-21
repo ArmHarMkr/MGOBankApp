@@ -7,5 +7,6 @@ namespace MGOBankApp.ViewModels
         public List<OrderTicketEntity> CreditTicketWindow = new();
         public List<OrderTicketEntity> TaxTicketWindow = new();
         public IEnumerable<OrderTicketEntity> AllOrders;
+        public List<OrderTicketEntity> AllUsersOrders = new();
     }
 }

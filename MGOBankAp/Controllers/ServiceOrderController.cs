@@ -32,6 +32,7 @@ namespace MGOBankApp.Controllers
                                                        .OrderBy(o => o.OrderDate);
             TicketWindowViewModel ticketWindowVM = new();
             ticketWindowVM.AllOrders = orders.Where(o => o.AppUser == currentUser);
+            ticketWindowVM.AllUsersOrders = orders.ToList();
             foreach (var order in orders)
             {
                 if (order.OrderService.ToString().ToLower() == "bill")
