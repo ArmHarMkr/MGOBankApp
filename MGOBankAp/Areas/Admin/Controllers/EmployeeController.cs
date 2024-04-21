@@ -2,6 +2,7 @@
 using MGOBankApp.DAL.Data;
 using MGOBankApp.DAL.Repository;
 using MGOBankApp.Domain.Entity;
+using MGOBankApp.Domain.Roles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MGOBankApp.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     [Route("admin/{controller}")]
     [Area("Admin")]
     public class EmployeeController : Controller
@@ -68,11 +69,13 @@ namespace MGOBankApp.Areas.Admin.Controllers
         [HttpPost("GiveCustomerRole")]
         public async Task<IActionResult> GiveCustomerRole(string? id)
         {
-            var userFromDb = _userManager.Users.Where(u => u.Id == id).ToList();
+            var userFromDb = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (userFromDb == null)
                 return NotFound();
-            await _employeeService.GiveCustomerRole(userFromDb[0]);
+            await _employeeService.GiveCustomerRole(userFromDb);
             return RedirectToAction("AllUsers");
         }
+
+
     }
 }

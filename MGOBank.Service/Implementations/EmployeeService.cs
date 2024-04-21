@@ -15,7 +15,6 @@ namespace MGOBank.Service.Implementations
     {
         private readonly AppDbContext _db;
         private readonly UserManager<AppUser> _userManager;
-        List<string> removingRoles = new();
 
         public EmployeeService(AppDbContext db, UserManager<AppUser> userManager)
         {
@@ -25,37 +24,33 @@ namespace MGOBank.Service.Implementations
 
         public async Task GiveBillEmployeeRole(AppUser appUser)
         {
-            removingRoles.Add(SD.Role_CreditEmployee);
-            removingRoles.Add(SD.Role_Customer);
-            removingRoles.Add(SD.Role_TaxEmployee);
-            await _userManager.RemoveFromRolesAsync(appUser, removingRoles);
+            await _userManager.RemoveFromRoleAsync(appUser, SD.Role_CreditEmployee);
+            await _userManager.RemoveFromRoleAsync(appUser, SD.Role_Customer);
+            await _userManager.RemoveFromRoleAsync(appUser, SD.Role_TaxEmployee);
             await _userManager.AddToRoleAsync(appUser, SD.Role_BillEmployee);
         }
 
         public async Task GiveCreditEmployeeRole(AppUser appUser)
         {
-            removingRoles.Add(SD.Role_BillEmployee);
-            removingRoles.Add(SD.Role_Customer);
-            removingRoles.Add(SD.Role_TaxEmployee);
-            await _userManager.RemoveFromRolesAsync(appUser, removingRoles);
+            await _userManager.RemoveFromRoleAsync(appUser, SD.Role_BillEmployee);
+            await _userManager.RemoveFromRoleAsync(appUser, SD.Role_Customer);
+            await _userManager.RemoveFromRoleAsync(appUser, SD.Role_TaxEmployee);
             await _userManager.AddToRoleAsync(appUser, SD.Role_CreditEmployee);
         }
 
         public async Task GiveTaxEmployeeRole(AppUser appUser)
         {
-            removingRoles.Add(SD.Role_BillEmployee);
-            removingRoles.Add(SD.Role_Customer);
-            removingRoles.Add(SD.Role_CreditEmployee);
-            await _userManager.RemoveFromRolesAsync(appUser, removingRoles);
+            await _userManager.RemoveFromRoleAsync(appUser, SD.Role_BillEmployee);
+            await _userManager.RemoveFromRoleAsync(appUser, SD.Role_Customer);
+            await _userManager.RemoveFromRoleAsync(appUser, SD.Role_CreditEmployee);
             await _userManager.AddToRoleAsync(appUser, SD.Role_TaxEmployee);
         }
 
         public async Task GiveCustomerRole(AppUser appUser)
         {
-            removingRoles.Add(SD.Role_BillEmployee);
-            removingRoles.Add(SD.Role_CreditEmployee);
-            removingRoles.Add(SD.Role_TaxEmployee);
-            await _userManager.RemoveFromRolesAsync(appUser, removingRoles);
+            await _userManager.RemoveFromRoleAsync(appUser, SD.Role_BillEmployee);
+            await _userManager.RemoveFromRoleAsync(appUser, SD.Role_CreditEmployee);
+            await _userManager.RemoveFromRoleAsync(appUser, SD.Role_TaxEmployee);
             await _userManager.AddToRoleAsync(appUser, SD.Role_Customer);
         }
     }

@@ -101,5 +101,13 @@ namespace MGOBankApp.Controllers
             }
             return RedirectToAction("AllOrders", "ServiceOrder");
         }
+
+        [HttpPost("DeleteAll")]
+        public async Task<IActionResult> DeleteAll()
+        {
+            _unitOfWork.OrderTicket.RemoveRange(_unitOfWork.OrderTicket.GetAll());
+            await _unitOfWork.Save();
+            return RedirectToAction("AllOrders", "ServiceOrder");
+        }
     }
 }

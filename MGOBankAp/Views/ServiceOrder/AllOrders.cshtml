@@ -473,6 +473,14 @@ media (max-width: 767px) {
         return type;
     }
 }
+
+
+<form asp-action="DeleteAll" asp-controller="ServiceOrder">
+    <button type="submit">Delet all order tickets</button>
+</form>
+
+
+
 <form asp-action="AddBillService" asp-controller="ServiceOrder">
     <button type="submit">Order Bill Service</button>
 </form>
@@ -524,13 +532,6 @@ else
             </section>
         </article>
         </div>
-
-        @* <p>@order.OrderTicketId</p>
-        <p>@order.OrderNumber</p>
-        <p>@order.OrderService.ToString()</p>
-        <p>@order.OrderDate.ToShortTimeString()</p>
-        <p>@order.AppUser.FullName</p>
-        <br /> *@
     }
 }
     </div>
