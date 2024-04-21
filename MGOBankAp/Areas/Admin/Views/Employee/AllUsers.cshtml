@@ -17,6 +17,7 @@
             <th scope="col">Employee Email</th>
             <th scope="col">User Role</th>
             <th scope="col">Actions</th>
+            <th scope="col">Delete User</th>
         </tr>
     </thead>
     <tbody>
@@ -87,6 +88,18 @@
                     else
                     {
                         <p class="text-dark">Admin. You do not need a role, bro</p>
+                    }
+                </td>
+                <td>
+                    @if (!await userManager.IsInRoleAsync(user, SD.Role_Admin))
+                    {
+                        <form asp-action="DeleteAllUsers" asp-controller="Employee" asp-route-id="@user.Id">
+                            <button type="submit">Delete this use</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <p class="text-dark">Admin. You do not need to delete yourself, bro</p>
                     }
                 </td>
             </tr>

@@ -21,7 +21,7 @@ namespace MGOBank.Service.Implementations
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(UpdateOrderTickets, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
+            _timer = new Timer(UpdateOrderTickets, null, TimeSpan.Zero, TimeSpan.FromSeconds(240));
             return Task.CompletedTask;
         }
 
@@ -31,11 +31,11 @@ namespace MGOBank.Service.Implementations
             {
                 var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-                var orders = db.OrderTickets.Where(o => o.IsDone).ToList();
+                var orders = db.OrderTickets.Where(o => o.IsDone == false).ToList();
 
                 foreach (var order in orders)
                 {
-                    order.IsDone = false;
+                    db.Remove(order);
                 }
 
                 db.SaveChanges();

@@ -17,6 +17,7 @@ namespace MGOBankApp.DAL.Implementation
         public IUserRepository User { get; private set; }
         public IOrderTicketRepository OrderTicket { get; private set; }
         public IEmployeeRepository Employee { get; private set; }
+        public ICardRepository Card { get; private set; }
 
 
         public UnitOfWork(AppDbContext db, UserManager<AppUser> userManager)
@@ -26,6 +27,7 @@ namespace MGOBankApp.DAL.Implementation
             User = new UserRepository(_db);
             OrderTicket = new OrderTicketRepository(_db);
             Employee = new EmployeeRepository(_db, _userManager);
+            Card = new CardRepository(_db);
         }
 
 

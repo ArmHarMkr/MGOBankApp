@@ -11,6 +11,7 @@ namespace MGOBankApp.DAL.Repository
         IUserRepository User { get; }
         IOrderTicketRepository OrderTicket { get; }
         IEmployeeRepository Employee { get; }
+        ICardRepository Card { get; }
 
         Task Save();
     }

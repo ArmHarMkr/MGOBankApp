@@ -82,6 +82,7 @@ using (var scope = app.Services.CreateScope())
     {
         var user = await userManager.FindByEmailAsync(email);
         await userManager.AddToRoleAsync(user, SD.Role_Admin);
+        await userManager.RemoveFromRoleAsync(user, SD.Role_Customer);
     }
 }
 

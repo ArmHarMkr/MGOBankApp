@@ -19,7 +19,11 @@ namespace MGOBankApp.Areas.Admin.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeeService _employeeService;
         private readonly UserManager<AppUser> _userManager;
-        public EmployeeController(AppDbContext db, UserManager<AppUser> userManager, IUnitOfWork unitOfWork, IEmployeeService employeeService)
+
+        public EmployeeController(AppDbContext db,
+                                  UserManager<AppUser> userManager,
+                                  IUnitOfWork unitOfWork,
+                                  IEmployeeService employeeService)
         {
             _db = db;
             _employeeService = employeeService;
@@ -76,6 +80,35 @@ namespace MGOBankApp.Areas.Admin.Controllers
             return RedirectToAction("AllUsers");
         }
 
+        [HttpPost("DeleteAllUsers")]
+        public async Task<IActionResult> DeleteAllUsers(string? id)
+        {
+            try
+            {
+                AppUser deletingUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+                if (deletingUser != null)
+                {
+                    if (deletingUser.CardEntity != null)
+                    {
+                        CardEntity userCard = await _db.Cards.FirstOrDefaultAsync(c => c.CardId == deletingUser.CardEntity.CardId);
+                        if (userCard != null)
+                        {
+                            _db.Cards.Remove(userCard);
+                        }
+                    }
 
+                    _db.Users.Remove(deletingUser);
+                    await _db.SaveChangesAsync();
+                }
+                return RedirectToAction("AllUsers");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+
+
+        }
     }
 }
