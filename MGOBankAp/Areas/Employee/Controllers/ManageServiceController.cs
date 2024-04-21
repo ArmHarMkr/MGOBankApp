@@ -46,7 +46,7 @@ namespace MGOBankApp.Areas.Employee.Controllers
             return View(allTaxes);
         }
 
-        [Authorize(Roles = "CreditEmployee")]
+        [Authorize(Roles = "BillService")]
         [HttpGet("BillServices")]
         public async Task<IActionResult> BillServices()
         {
