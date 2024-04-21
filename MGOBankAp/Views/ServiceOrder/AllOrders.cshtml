@@ -1,6 +1,11 @@
-﻿@using MGOBankApp.Domain.Enum
+﻿@using MGOBankApp.Domain.Entity
+@using MGOBankApp.Domain.Enum
 @using MGOBankApp.ViewModels
+@using Microsoft.AspNetCore.Identity
 @model TicketWindowViewModel
+@inject UserManager<AppUser> userManager
+
+
 <style type="text/css">
     import url('https://fonts.googleapis.com/css?family=Oswald');
     * {
@@ -45,7 +50,7 @@
         text-transform: uppercase;
         border-radius: 10px;
         position: relative;
-        margin-left:auto;
+        margin-left: auto;
         margin-right: auto;
     }
 
@@ -118,48 +123,47 @@
             font-size: 130%
         }
 
-   
 
-    .card-cont > div {
-        display: table-row
-    }
 
-    .card-cont .even-date i,
-    .card-cont .even-info i,
-    .card-cont .even-date time,
-    .card-cont .even-info p {
-        display: table-cell
-    }
+        .card-cont > div {
+            display: table-row
+        }
 
-    .card-cont .even-date i,
-    .card-cont .even-info i {
-        padding: 5% 5% 0 0
-    }
+        .card-cont .even-date i,
+        .card-cont .even-info i,
+        .card-cont .even-date time,
+        .card-cont .even-info p {
+            display: table-cell
+        }
 
-    .card-cont .even-info p {
-        padding: 30px 50px 0 0
-    }
+        .card-cont .even-date i,
+        .card-cont .even-info i {
+            padding: 5% 5% 0 0
+        }
 
-    .card-cont .even-date time span {
-        display: block
-    }
+        .card-cont .even-info p {
+            padding: 30px 50px 0 0
+        }
 
-    .card-cont button {
-        border:none;
-        display: block;
-        width: 80px;
-        height: 30px;
-        text-transform:uppercase;
-        background-color: #F8504C;
-        color: #fff;
-        text-align: center;
-        line-height: 30px;
-        border-radius: 5px;
-        position: absolute;
-        right: 10px;
-        bottom: 10px
+        .card-cont .even-date time span {
+            display: block
+        }
 
-    }
+        .card-cont button {
+            border: none;
+            display: block;
+            width: 80px;
+            height: 30px;
+            text-transform: uppercase;
+            background-color: #F8504C;
+            color: #fff;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 5px;
+            position: absolute;
+            right: 10px;
+            bottom: 10px
+        }
 
     .row:last-child .card:first-child .card-cont a {
         background-color: #037FDD
@@ -190,68 +194,70 @@
 
     }
     /* site main */
-    .sitemain{
-        display:flex;
-        
+    .sitemain {
+        display: flex;
     }
 
-    .main-child1  {
-        width:78%;
-       
+    .main-child1 {
+        width: 78%;
     }
 
     .main-child2 {
         width: 20%;
     }
-    .table-wrapper{
-    margin: 10px 70px 70px;
-}
- /* for table */
-.fl-table {
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: normal;
-    border: none;
-    border-collapse: collapse;
-    width: auto;
-    max-width: 100%;
-    white-space: nowrap;
-    background-color: white;
-}
 
-.fl-table td, .fl-table th {
-    text-align: center;
-    padding: 8px;
-}
-
-.fl-table td {
-    border-right: 1px solid #f8f8f8;
-    font-size: 12px;
-}
-
-.fl-table thead th {
-    color: #ffffff;
-    background: #4FC3A1;
-}
-
-
-.fl-table thead th:nth-child(odd) {
-    color: #ffffff;
-    background: #324960;
-}
-
-.fl-table tr:nth-child(even) {
-    background: #F8F8F8;
-}
-
-/* Responsive */
-
-media (max-width: 767px) {
+    .table-wrapper {
+        margin: 10px 70px 70px;
+    }
+    /* for table */
     .fl-table {
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: normal;
+        border: none;
+        border-collapse: collapse;
+        width: auto;
+        max-width: 100%;
+        white-space: nowrap;
+        background-color: white;
+    }
+
+        .fl-table td, .fl-table th {
+            text-align: center;
+            padding: 8px;
+        }
+
+        .fl-table td {
+            border-right: 1px solid #f8f8f8;
+            font-size: 12px;
+        }
+
+        .fl-table thead th {
+            color: #ffffff;
+            background: #4FC3A1;
+        }
+
+
+            .fl-table thead th:nth-child(odd) {
+                color: #ffffff;
+                background: #324960;
+            }
+
+        .fl-table tr:nth-child(even) {
+            background: #F8F8F8;
+        }
+
+    /* Responsive */
+
+    media (max-width: 767px) {
+        .fl-table
+
+    {
         display: block;
         width: 100%;
     }
-    .table-wrapper:before{
+
+    .table-wrapper:before {
         content: "Scroll horizontally >";
         display: block;
         text-align: right;
@@ -259,20 +265,25 @@ media (max-width: 767px) {
         color: white;
         padding: 0 0 10px;
     }
+
     .fl-table thead, .fl-table tbody, .fl-table thead th {
         display: block;
     }
-    .fl-table thead th:last-child{
-        border-bottom: none;
-    }
+
+        .fl-table thead th:last-child {
+            border-bottom: none;
+        }
+
     .fl-table thead {
         float: left;
     }
+
     .fl-table tbody {
         width: auto;
         position: relative;
         overflow-x: auto;
     }
+
     .fl-table td, .fl-table th {
         padding: 20px .625em .625em .625em;
         height: 60px;
@@ -284,31 +295,39 @@ media (max-width: 767px) {
         font-size: 13px;
         text-overflow: ellipsis;
     }
+
     .fl-table thead th {
         text-align: left;
         border-bottom: 1px solid #f7f7f9;
     }
+
     .fl-table tbody tr {
         display: table-cell;
     }
-    .fl-table tbody tr:nth-child(odd) {
-        background: none;
-    }
+
+        .fl-table tbody tr:nth-child(odd) {
+            background: none;
+        }
+
     .fl-table tr:nth-child(even) {
         background: transparent;
     }
+
     .fl-table tr td:nth-child(odd) {
         background: #F8F8F8;
         border-right: 1px solid #E6E4E4;
     }
+
     .fl-table tr td:nth-child(even) {
         border-right: 1px solid #E6E4E4;
     }
+
     .fl-table tbody td {
         display: block;
         text-align: center;
     }
-}
+
+    }
 </style>
 @* <section class="container">
     <h1>Events</h1>
@@ -472,11 +491,13 @@ media (max-width: 767px) {
         }
         return type;
     }
+    AppUser currentUser = await userManager.GetUserAsync(User);
+
 }
 
 
 <form asp-action="DeleteAll" asp-controller="ServiceOrder">
-    <button type="submit">Delet all order tickets</button>
+    <button type="submit">Delete all order tickets</button>
 </form>
 
 
@@ -494,127 +515,128 @@ media (max-width: 767px) {
 <div class="sitemain">
     <div class="main-child1">
 
-    
-@if (Model.AllOrders.Count() == 0)
-{
-    <p>No order found</p>
-}
-else
-{
-    @foreach (var order in Model.AllOrders)
-    {
-        <div class="row">
-        <article class="card fl-left">
-            <section class="date">
-                <time datetime="23th feb">
-                    <span>@order.OrderDate.Day</span><span>@WhatTheMonth(@order.OrderDate.Month).Substring(0,3)</span>
-                </time>
-            </section>
-            <section class="card-cont">
-                <small>@order.OrderService.ToString()</small>
-                <h3>@SetOrderServiceType(@order.OrderService)@order.OrderNumber</h3>
-                <div class="even-date">
-                    <i class="fa fa-calendar"></i>
-                    <time>
-                        <span> @order.OrderDate.DayOfWeek @order.OrderDate.Day @WhatTheMonth(@order.OrderDate.Month) @order.OrderDate.Year</span>
-                        <span>@order.OrderDate.ToShortTimeString() to @order.OrderDate.AddMinutes(4).ToShortTimeString()</span>
-                    </time>
+
+
+        @if (Model.AllOrders.Count() == 0)
+        {
+            <p>No order found</p>
+        }
+        else
+        {
+            @foreach (var order in Model.AllOrders)
+            {
+                <div class="row">
+                    <article class="card fl-left">
+                        <section class="date">
+                            <time datetime="23th feb">
+                                <span>@order.OrderDate.Day</span><span>@WhatTheMonth(@order.OrderDate.Month).Substring(0, 3)</span>
+                            </time>
+                        </section>
+                        <section class="card-cont">
+                            <small>@order.OrderService.ToString()</small>
+                            <h3>@SetOrderServiceType(@order.OrderService)@order.OrderNumber</h3>
+                            <div class="even-date">
+                                <i class="fa fa-calendar"></i>
+                                <time>
+                                    <span> @order.OrderDate.DayOfWeek @order.OrderDate.Day @WhatTheMonth(@order.OrderDate.Month) @order.OrderDate.Year</span>
+                                    <span>@order.OrderDate.ToShortTimeString() to @order.OrderDate.AddMinutes(4).ToShortTimeString()</span>
+                                </time>
+                            </div>
+                            <div class="even-info">
+                                <i class="fa fa-map-marker"></i>
+                                <p>
+                                    @order.AppUser.FullName,thanks for waiting
+                                </p>
+                            </div>
+                            <form asp-action="DeleteTicket" asp-controller="ServiceOrder" asp-route-id="@order.OrderTicketId">
+                                <button type="submit">DELETE</button>
+                            </form>
+                        </section>
+                    </article>
                 </div>
-                <div class="even-info">
-                    <i class="fa fa-map-marker"></i>
-                    <p>
-                        @order.AppUser.FullName,thanks for waiting
-                    </p>
-                </div>
-                <form asp-action="DeleteTicket" asp-controller="ServiceOrder" asp-route-id="@order.OrderTicketId">
-                <button type="submit" href="#">delete</button>
-                </form>
-            </section>
-        </article>
-        </div>
-    }
-}
+            }
+        }
     </div>
     <div class="main-child2">
 
-            <table class="fl-table">
-                <thead>
-                    <tr>
-                        <th>Header 1</th>
-                        <th>Header 2</th>
-                        <th>Header 3</th>
-                        <th>Header 4</th>
-                        <th>Header 5</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Content 1</td>
-                        <td>Content 1</td>
-                        <td>Content 1</td>
-                        <td>Content 1</td>
-                        <td>Content 1</td>
-                    </tr>
-                    <tr>
-                        <td>Content 2</td>
-                        <td>Content 2</td>
-                        <td>Content 2</td>
-                        <td>Content 2</td>
-                        <td>Content 2</td>
-                    </tr>
-                    <tr>
-                        <td>Content 3</td>
-                        <td>Content 3</td>
-                        <td>Content 3</td>
-                        <td>Content 3</td>
-                        <td>Content 3</td>
-                    </tr>
-                    <tr>
-                        <td>Content 4</td>
-                        <td>Content 4</td>
-                        <td>Content 4</td>
-                        <td>Content 4</td>
-                        <td>Content 4</td>
-                    </tr>
-                    <tr>
-                        <td>Content 5</td>
-                        <td>Content 5</td>
-                        <td>Content 5</td>
-                        <td>Content 5</td>
-                        <td>Content 5</td>
-                    </tr>
-                    <tr>
-                        <td>Content 6</td>
-                        <td>Content 6</td>
-                        <td>Content 6</td>
-                        <td>Content 6</td>
-                        <td>Content 6</td>
-                    </tr>
-                    <tr>
-                        <td>Content 7</td>
-                        <td>Content 7</td>
-                        <td>Content 7</td>
-                        <td>Content 7</td>
-                        <td>Content 7</td>
-                    </tr>
-                    <tr>
-                        <td>Content 8</td>
-                        <td>Content 8</td>
-                        <td>Content 8</td>
-                        <td>Content 8</td>
-                        <td>Content 8</td>
-                    </tr>
-                    <tr>
-                        <td>Content 9</td>
-                        <td>Content 9</td>
-                        <td>Content 9</td>
-                        <td>Content 9</td>
-                        <td>Content 9</td>
-                    </tr>
-                <tbody>
-            </table>
-        </div>
+        <table class="fl-table">
+            <thead>
+                <tr>
+                    <th>Header 1</th>
+                    <th>Header 2</th>
+                    <th>Header 3</th>
+                    <th>Header 4</th>
+                    <th>Header 5</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Content 1</td>
+                    <td>Content 1</td>
+                    <td>Content 1</td>
+                    <td>Content 1</td>
+                    <td>Content 1</td>
+                </tr>
+                <tr>
+                    <td>Content 2</td>
+                    <td>Content 2</td>
+                    <td>Content 2</td>
+                    <td>Content 2</td>
+                    <td>Content 2</td>
+                </tr>
+                <tr>
+                    <td>Content 3</td>
+                    <td>Content 3</td>
+                    <td>Content 3</td>
+                    <td>Content 3</td>
+                    <td>Content 3</td>
+                </tr>
+                <tr>
+                    <td>Content 4</td>
+                    <td>Content 4</td>
+                    <td>Content 4</td>
+                    <td>Content 4</td>
+                    <td>Content 4</td>
+                </tr>
+                <tr>
+                    <td>Content 5</td>
+                    <td>Content 5</td>
+                    <td>Content 5</td>
+                    <td>Content 5</td>
+                    <td>Content 5</td>
+                </tr>
+                <tr>
+                    <td>Content 6</td>
+                    <td>Content 6</td>
+                    <td>Content 6</td>
+                    <td>Content 6</td>
+                    <td>Content 6</td>
+                </tr>
+                <tr>
+                    <td>Content 7</td>
+                    <td>Content 7</td>
+                    <td>Content 7</td>
+                    <td>Content 7</td>
+                    <td>Content 7</td>
+                </tr>
+                <tr>
+                    <td>Content 8</td>
+                    <td>Content 8</td>
+                    <td>Content 8</td>
+                    <td>Content 8</td>
+                    <td>Content 8</td>
+                </tr>
+                <tr>
+                    <td>Content 9</td>
+                    <td>Content 9</td>
+                    <td>Content 9</td>
+                    <td>Content 9</td>
+                    <td>Content 9</td>
+                </tr>
+            <tbody>
+        </table>
     </div>
+</div>
 
 <h1>Bills</h1>
 @foreach (var bill in Model.BillTicketWindow)
