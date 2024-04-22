@@ -7,7 +7,8 @@ namespace MGOBankApp.Domain.Entity
     {
         public string FullName { get;set; }
         public long AccountNumber { get;set; }
-        [AllowNull]
         public CardEntity CardEntity { get;set; }
+        [AllowNull]
+        public DateTime CreatingTime { get; set; } = DateTime.Now;
     }
 }

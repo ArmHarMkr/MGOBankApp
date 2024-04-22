@@ -16,5 +16,7 @@ namespace MGOBankApp.Domain.Entity
         [AllowNull]
         [StringLength(4, MinimumLength = 4, ErrorMessage = "The field must be exactly 4 characters long.")]
         public string PinCode { get; set; }
+        public DateTime CreatingTime { get; set; } = DateTime.Now;
+
     }
 }
