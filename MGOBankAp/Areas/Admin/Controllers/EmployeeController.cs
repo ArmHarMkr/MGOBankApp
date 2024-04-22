@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace MGOBankApp.Areas.Admin.Controllers
 {
@@ -106,9 +107,6 @@ namespace MGOBankApp.Areas.Admin.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
-
-
         }
     }
 }

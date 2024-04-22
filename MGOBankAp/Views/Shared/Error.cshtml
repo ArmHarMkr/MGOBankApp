@@ -8,6 +8,10 @@
 
 @if (Model.ShowRequestId)
 {
+    @if(Model.RequestId == "418")
+    {
+        <p>Teapot</p>
+    }
     <p>
         <strong>Request ID:</strong> <code>@Model.RequestId</code>
     </p>

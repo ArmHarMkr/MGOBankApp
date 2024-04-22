@@ -97,7 +97,8 @@ namespace MGOBankApp.Controllers
             OrderTicketEntity orderFromDb = _unitOfWork.OrderTicket.Get(o => o.OrderTicketId == id);
             if (orderFromDb != null)
             {
-                _unitOfWork.OrderTicket.Remove(orderFromDb);
+                orderFromDb.IsDone = true;
+                _db.OrderTickets.Update(orderFromDb);
                 await _unitOfWork.Save();
             }
             return RedirectToAction("AllOrders", "ServiceOrder");
