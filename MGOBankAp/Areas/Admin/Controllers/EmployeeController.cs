@@ -1,4 +1,5 @@
 ﻿using MGOBank.Service.Interfaces;
+using MGOBankApp.Areas.Admin.ViewModels;
 using MGOBankApp.DAL.Data;
 using MGOBankApp.DAL.Repository;
 using MGOBankApp.Domain.Entity;
@@ -35,7 +36,9 @@ namespace MGOBankApp.Areas.Admin.Controllers
         public async Task<IActionResult> AllUsers()
         {
             IEnumerable<AppUser> allUsers = await _userManager.Users.ToListAsync();
-            return View(allUsers);
+            AppuserCardViewModel appuserCardViewModel = new();
+            appuserCardViewModel.Users = allUsers;
+            return View(appuserCardViewModel);
         }
 
         [HttpPost("GiveTaxEmployee")]
@@ -107,6 +110,19 @@ namespace MGOBankApp.Areas.Admin.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToBalance(string? id)
+        {
+            AppUser? currentUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if(currentUser != null)
+            {
+                CardEntity currentCard = currentUser.CardEntity;
+                _db.Cards.Update(currentCard);
+                await _unitOfWork.Save();
+            }
+            return BadRequest("No user found");
         }
     }
 }

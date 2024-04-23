@@ -1,7 +1,8 @@
-﻿@using MGOBankApp.Domain.Entity
+﻿@using MGOBankApp.Areas.Admin.ViewModels
+@using MGOBankApp.Domain.Entity
 @using MGOBankApp.Domain.Roles
 @using Microsoft.AspNetCore.Identity
-@model IEnumerable<AppUser>
+@model AppuserCardViewModel
 @inject UserManager<AppUser> userManager
 
 @{
@@ -21,7 +22,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var user in Model)
+        @foreach (var user in Model.Users)
         {
             <tr>
                 <td>@user.Id</td>
@@ -94,13 +95,19 @@
                     @if (!await userManager.IsInRoleAsync(user, SD.Role_Admin))
                     {
                         <form asp-action="DeleteAllUsers" asp-controller="Employee" asp-route-id="@user.Id">
-                            <button type="submit">Delete this use</button>
+                            <button type="submit">Delete this user</button>
                         </form>
                     }
                     else
                     {
                         <p class="text-dark">Admin. You do not need to delete yourself, bro</p>
                     }
+                </td>
+                <td>
+                    <form asp-action="AddToBalance" asp-controller="Employee" asp-route-id="@user.Id">
+                        <input asp-for="@Model.CardEntity.AccessibleMoney" placeholder="Add to balance"/>
+                        <button type="submit">Add to Balance</button>
+                    </form>
                 </td>
             </tr>
         }
