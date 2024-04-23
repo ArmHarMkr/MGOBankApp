@@ -9,6 +9,8 @@
 }
 @* .mk-icon-world-map{
 TODO>>>>>>>>>>>>>>>>>>>>>>  background-image:url *@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+
 <style>
     .mk-icon-world-map {
         background-image: url("https://cdn.pixabay.com/photo/2014/03/25/16/34/world-map-297446_1280.png");
@@ -102,7 +104,7 @@ TODO>>>>>>>>>>>>>>>>>>>>>>  background-image:url *@
   transform:rotate(45deg);
 }
 .credit-card-wrap .credit-font{
-  color:#fff;
+            color: rgba(255, 255, 255, .8);
   font-size:18px;
   font-family:ocr_a_std,sans-serif;
   text-shadow:-1px -1px 0px rgba(255,255,255,0.3), 1px 1px 0px rgba(0,0,0,0.8);
@@ -185,6 +187,28 @@ font-face{
 .mk-balance-icon{
 display:flex;
 }
+.mk-balance{
+        color: white;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        margin-left:50px;
+        font-size:20px;
+    }
+
+    #balance {
+        display: block;
+    }
+
+    #open_balance {
+        display: none;
+    }
+
+    .eye-icon {
+        cursor: pointer;
+        font-size: 24px;
+        margin: 10px;
+    }
 </style>
 @if (Model.CardEntity == null)
 {
@@ -243,7 +267,11 @@ else
     </header>
             <div class="mk-balance-icon">
                 <div class="mk-icon-sim"></div>
-                <div class="mk-balance">123456.000</div>
+                <div class="mk-balance">
+                    <div id="balance">******** AMD</div>
+                    <div id="open_balance">@Model.CardEntity.AccessibleMoney AMD</div>
+                    <i id="toggleButton" class="eye-icon zmdi zmdi-eye"></i>
+                </div>
             </div>
             <div class="credit-font credit-card-number" data-text="@Model.CardEntity.CardNum.Substring(0, 4)">
                 @Model.CardEntity.CardNum.Substring(0, 4) 
@@ -264,3 +292,24 @@ else
   </div>
 </div>
 }
+<script>
+    const balanceDiv = document.getElementById('balance');
+    const openBalanceDiv = document.getElementById('open_balance');
+    const eyeIcon = document.getElementById('toggleButton');
+
+    eyeIcon.addEventListener('click', function () {
+        if (balanceDiv.style.display === 'block') {
+            balanceDiv.style.display = 'none';
+            openBalanceDiv.style.display = 'block';
+            eyeIcon.classList.remove('zmdi-eye');
+            eyeIcon.classList.add('zmdi-eye-off');
+            eyeIcon.classList.add('hidden');
+        } else {
+            balanceDiv.style.display = 'block';
+            openBalanceDiv.style.display = 'none';
+            eyeIcon.classList.remove('zmdi-eye-off');
+            eyeIcon.classList.add('zmdi-eye');
+            eyeIcon.classList.remove('hidden');
+        }
+    });
+</script>
