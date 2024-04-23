@@ -7,8 +7,8 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-        
-        <a id="manage" style="text-decoration:none;" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
+
+        <a style="color:#4FC3A1" id="manage" style="text-decoration:none;" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button id="logout" type="submit" class="btn btn-light action-button" role="button">Log out</button>
         </form>
