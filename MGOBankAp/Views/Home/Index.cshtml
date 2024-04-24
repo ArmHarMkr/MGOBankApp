@@ -33,15 +33,13 @@ TODO>>>>>>>>>>>>>>>>>>>>>>  background-image:url *@
   position:absolute;
 }
 .credit-card-wrap{
-  top:50%;
-  left:50%;
   width:450px;
   height:285px;
-  position:fixed;
+  position:sticky;
   border-radius:20px;
   background:#5D4157;
-  margin-left:-225px;
-  margin-top:-142.5px;
+  top:263px;
+  margin:auto;
   background:-webkit-linear-gradient(to left, #5D4157 , #A8CABA);
   background:linear-gradient(to left, #5D4157 , #A8CABA);
   box-shadow:2px 2px rgba(0,0,0,.4);
@@ -208,6 +206,28 @@ display:flex;
         font-size: 24px;
         margin: 10px;
     }
+    .payment{
+    width:150px;
+    height:150px;
+    border:1px solid grey;
+    border-radius:15px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    flex-wrap:wrap;
+    }
+    .payment-link{
+        text-decoration:none;
+        color:black;
+    }.payment-link:hover{
+        color:dimgrey;
+        transition:0.7s;
+    }
+    .row-margin{
+        margin-top:25px;
+        margin-bottom:25px;
+    }
 </style>
 @if (Model.CardEntity == null)
 {
@@ -255,7 +275,32 @@ else
             </style>
             break;
     }
-
+    <div class="container">
+        <div class="row">
+            <div style="height:800px;"class="col-6">
+                <div class="row row-margin m-auto">
+                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
+                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
+                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
+                </div>
+                <div class="row row-margin">
+                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
+                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
+                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
+                </div>
+                <div class="row row-margin">
+                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
+                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
+                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
+                </div>
+                <div class="row row-margin">
+                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
+                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
+                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
+                </div>
+            </div>
+         
+            <div style="height:800px;"class="col-6">
 <div class="credit-card-wrap">
   <div class="mk-icon-world-map"></div>
   <div class="credit-card-inner">
@@ -289,6 +334,10 @@ else
       </div>
     </footer>
   </div>
+</div>
+            </div>
+           
+        </div>
 </div>
 }
 <script>
