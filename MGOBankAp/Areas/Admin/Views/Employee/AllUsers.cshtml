@@ -1,4 +1,19 @@
-﻿@using MGOBankApp.Areas.Admin.ViewModels
+﻿@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+
+@using MGOBankApp.Areas.Admin.ViewModels
 @using MGOBankApp.Domain.Entity
 @using MGOBankApp.Domain.Roles
 @using Microsoft.AspNetCore.Identity
@@ -103,11 +118,19 @@
                         <p class="text-dark">Admin. You do not need to delete yourself, bro</p>
                     }
                 </td>
+
                 <td>
-                    <form asp-action="AddToBalance" asp-controller="Employee" asp-route-id="@user.Id">
-                        <input asp-for="@Model.CardEntity.AccessibleMoney" placeholder="Add to balance"/>
-                        <button type="submit">Add to Balance</button>
-                    </form>
+                    @if (!await userManager.IsInRoleAsync(user, SD.Role_Admin))
+                    {
+                        <form asp-action="AddToBalance" asp-controller="Employee" asp-route-id="@user.Id">
+                            <input asp-for="@Model.CardEntity.AccessibleMoney" placeholder="Add to balance" />
+                            <button type="submit">Add to Balance</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <p>You are admin, you do not need to give yourself money</p>
+                    }
                 </td>
             </tr>
         }

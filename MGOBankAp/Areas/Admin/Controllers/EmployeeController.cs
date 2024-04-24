@@ -113,16 +113,33 @@ namespace MGOBankApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToBalance(string? id)
+        public async Task<IActionResult> AddToBalance(string? id, CardEntity cardEntity)
         {
-            AppUser? currentUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if(currentUser != null)
+            try
             {
-                CardEntity currentCard = currentUser.CardEntity;
-                _db.Cards.Update(currentCard);
-                await _unitOfWork.Save();
+                AppUser currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == id);
+                if (currentUser != null && currentUser.CardEntity != null)
+                {
+                    CardEntity currentCard = currentUser.CardEntity;
+
+                    currentCard.AccessibleMoney += cardEntity.AccessibleMoney;
+
+                    _db.Cards.Update(currentCard);
+                    await _unitOfWork.Save();
+
+                    TempData["SuccessMessage"] = "Balance was added successfully";
+                    return RedirectToAction("AllUsers");
+                }
+                return BadRequest("No user or card found");
+
             }
-            return BadRequest("No user found");
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message.ToString());
+            }
+
         }
+
+
     }
 }
