@@ -84,25 +84,33 @@ namespace MGOBankApp.Areas.Admin.Controllers
             return RedirectToAction("AllUsers");
         }
 
-        [HttpPost("DeleteAllUsers")]
-        public async Task<IActionResult> DeleteAllUsers(string? id)
+        [HttpPost("DeleteUser")]
+        public async Task<IActionResult> DeleteUser(string? id)
         {
             try
             {
                 AppUser deletingUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
-                if (deletingUser != null)
+                AppUser currentUser = await _userManager.GetUserAsync(User);
+                if(await _userManager.IsInRoleAsync(currentUser, SD.Role_Admin))
                 {
-                    if (deletingUser.CardEntity != null)
+                    if (deletingUser != null)
                     {
-                        CardEntity userCard = await _db.Cards.FirstOrDefaultAsync(c => c.CardId == deletingUser.CardEntity.CardId);
-                        if (userCard != null)
+                        if (deletingUser.CardEntity != null)
                         {
-                            _db.Cards.Remove(userCard);
+                            CardEntity userCard = await _db.Cards.FirstOrDefaultAsync(c => c.CardId == deletingUser.CardEntity.CardId);
+                            if (userCard != null)
+                            {
+                                _db.Cards.Remove(userCard);
+                            }
                         }
-                    }
 
-                    _db.Users.Remove(deletingUser);
-                    await _db.SaveChangesAsync();
+                        _db.Users.Remove(deletingUser);
+                        await _db.SaveChangesAsync();
+                    }
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Do not delete yourself, bro";
                 }
                 return RedirectToAction("AllUsers");
             }

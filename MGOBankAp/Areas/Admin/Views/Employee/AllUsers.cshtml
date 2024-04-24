@@ -129,14 +129,26 @@
                 <td>
                     @if (!await userManager.IsInRoleAsync(user, SD.Role_Admin))
                     {
-                        <form asp-action="AddToBalance" asp-controller="Employee" asp-route-id="@user.Id">
-                            <input asp-for="@Model.CardEntity.AccessibleMoney" placeholder="Add to balance" />
-                            <button type="submit">Add to Balance</button>
-                        </form>
+                            <form asp-action="AddToBalance" asp-controller="Employee" asp-route-id="@user.Id">
+                                <input asp-for="@Model.CardEntity.AccessibleMoney" placeholder="Add to balance" />
+                                <button type="submit">Add to Balance</button>
+                            </form>
                     }
                     else
                     {
                         <p>You are admin, you do not need to give yourself money</p>
+                    }
+                </td>
+                <td>
+                    @if(!await userManager.IsInRoleAsync(user, SD.Role_Admin))
+                    {
+                        <form asp-action="DeleteUser" asp-controller="Employee" asp-area="Admin" asp-route-id="@user.Id">
+                            <button type="submit">Delete this user</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <p>Do not delete yourself, bro</p>
                     }
                 </td>
             </tr>
