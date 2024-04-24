@@ -109,9 +109,16 @@
                 <td>
                     @if (!await userManager.IsInRoleAsync(user, SD.Role_Admin))
                     {
-                        <form asp-action="DeleteAllUsers" asp-controller="Employee" asp-route-id="@user.Id">
-                            <button type="submit">Delete this user</button>
-                        </form>
+                        if (user.CardEntity != null)
+                        {
+                            <form asp-action="DeleteAllUsers" asp-controller="Employee" asp-route-id="@user.Id">
+                                <button type="submit">Delete this user</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <p>This customer does not have a card</p>
+                        }
                     }
                     else
                     {

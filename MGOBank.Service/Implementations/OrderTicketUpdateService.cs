@@ -1,6 +1,7 @@
 ﻿using MGOBankApp.DAL.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace MGOBank.Service.Implementations
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(UpdateOrderTickets, null, TimeSpan.Zero, TimeSpan.FromSeconds(240));
+            _timer = new Timer(UpdateOrderTickets, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
             return Task.CompletedTask;
         }
 
@@ -30,14 +31,14 @@ namespace MGOBank.Service.Implementations
             using (var scope = _provider.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var logger = scope.ServiceProvider.GetRequiredService<ILogger<OrderTicketUpdateService>>();
 
-                var orders = db.OrderTickets.Where(o => o.IsDone == false).ToList();
-
+                var orders = db.OrderTickets.ToList();
                 foreach (var order in orders)
                 {
                     db.Remove(order);
                 }
-
+                logger.LogInformation("Data deleted successfully");
                 db.SaveChanges();
             }
         }
