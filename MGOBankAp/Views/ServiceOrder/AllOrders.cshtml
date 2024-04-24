@@ -450,7 +450,7 @@
 
 
 
-        @if (Model.AllOrders.Count() != 0)
+        @{if (Model.AllOrders.Count() != 0)
         {
         
             @foreach (var order in Model.AllOrders)
@@ -484,9 +484,27 @@
                         </section>
                     </article>
                 </div>
+                }
             }
-        }
-    </div>
+            else
+            {
+                <style>
+                .main-child1{
+                    height:500px;
+                    width:78%;
+                    margin-right:auto;
+                    margin-left:auto;
+                    border:1px solid grey;
+                    border-radius:15px;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                }
+                </style>
+                <h2 class="no-tickets-text">Tickets will be here</h2>
+            }
+           }
+            </div>
     <div class="main-child2">
 
         <table class="fl-table">
