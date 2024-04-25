@@ -22,7 +22,7 @@ namespace MGOBank.Service.Implementations
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(UpdateOrderTickets, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
+            _timer = new Timer(UpdateOrderTickets, null, TimeSpan.Zero, TimeSpan.FromSeconds(240));
             return Task.CompletedTask;
         }
 

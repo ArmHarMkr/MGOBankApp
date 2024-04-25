@@ -38,8 +38,9 @@ namespace MGOBank.Service.Implementations
 				generatedCard += randomDigit.Next(10).ToString();
 			}
 
-			int lunaSum = _counter.LunaCounting(generatedCard);
-			if (lunaSum % 10 != 0)
+			 int lunaSum = _counter.LunaCounting(generatedCard);
+
+            if (lunaSum % 10 != 0)
 				generatedCard += (10 - lunaSum % 10).ToString();
 			else
 				generatedCard += "0";
