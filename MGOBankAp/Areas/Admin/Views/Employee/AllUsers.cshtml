@@ -115,8 +115,8 @@
                     @if (!await userManager.IsInRoleAsync(user, SD.Role_Admin))
                     {
                             <form asp-action="AddToBalance" asp-controller="Employee" asp-route-id="@user.Id">
-                                <input asp-for="@Model.CardEntity.AccessibleMoney" placeholder="Add to balance" />
-                                <button type="submit">Add to Balance</button>
+                            <input class="form-control" style="width:179px; display:inline;" asp-for="@Model.CardEntity.AccessibleMoney" placeholder="Add to balance" />
+                                <button class="btn btn-success btn-sm"type="submit">Add</button>
                             </form>
                     }
                     else

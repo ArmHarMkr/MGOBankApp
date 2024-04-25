@@ -38,7 +38,7 @@ else
                     <td>@order.OrderService.ToString() @order.OrderNumber </td>
                     <td>
                         <form asp-action="CheckOrder" asp-controller="ManageService" asp-route-id="@order.OrderTicketId">
-                            <button type="submit">Manage Order</button>
+                            <button class="btn btn-info text-light" type="submit">Manage Order</button>
                         </form>
                     </td>
                 </tr>
