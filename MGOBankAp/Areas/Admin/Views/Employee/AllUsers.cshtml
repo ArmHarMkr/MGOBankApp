@@ -24,7 +24,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+<style>
+    .buttonformsadmin{
+        display:inline;
+    }
+</style>
 <table class="table table-bordered">
     <thead class="thead-dark">
         <tr>
@@ -32,7 +36,8 @@
             <th scope="col">Employee Name</th>
             <th scope="col">Employee Email</th>
             <th scope="col">User Role</th>
-            <th scope="col">Actions</th>
+            <th width="300px" scope="col">Give employee role</th>
+            <th scope="col">Add money</th>
             <th scope="col">Delete User</th>
         </tr>
     </thead>
@@ -54,78 +59,58 @@
                     {
                         @if (await userManager.IsInRoleAsync(user, SD.Role_Customer))
                         {
-                            <form asp-area="Admin" asp-controller="Employee" asp-action="GiveTaxEmployee" asp-route-id="@user.Id">
-                                <button type="submit" class="btn btn-success">Give Tax Employee Role</button>
+                            <form class="buttonformsadmin" asp-area="Admin" asp-controller="Employee" asp-action="GiveTaxEmployee" asp-route-id="@user.Id">
+                                <button type="submit" class="btn btn-success">Tax</button>
                             </form>
-                            <form asp-area="Admin" asp-controller="Employee" asp-action="GiveBillEmployee" asp-route-id="@user.Id">
-                                <button type="submit" class="btn btn-info">Give Bill Employee Role</button>
+                            <form class="buttonformsadmin" asp-area="Admin" asp-controller="Employee" asp-action="GiveBillEmployee" asp-route-id="@user.Id">
+                                <button type="submit" class="btn btn-info">Bill</button>
                             </form>
-                            <form asp-area="Admin" asp-controller="Employee" asp-action="GiveCreditEmployee" asp-route-id="@user.Id">
-                                <button type="submit" class="btn btn-warning">Give Credit Employee Role</button>
+                            <form class="buttonformsadmin" asp-area="Admin" asp-controller="Employee" asp-action="GiveCreditEmployee" asp-route-id="@user.Id">
+                                <button type="submit" class="btn btn-warning">Credit</button>
                             </form>
                         }
                         @if (await userManager.IsInRoleAsync(user, SD.Role_TaxEmployee))
                         {
-                            <form asp-area="Admin" asp-controller="Employee" asp-action="GiveBillEmployee" asp-route-id="@user.Id">
-                                <button type="submit" class="btn btn-info">Give Bill Employee Role</button>
+                            <form class="buttonformsadmin" asp-area="Admin" asp-controller="Employee" asp-action="GiveBillEmployee" asp-route-id="@user.Id">
+                                <button type="submit" class="btn btn-info">Bill</button>
                             </form>
-                            <form asp-area="Admin" asp-controller="Employee" asp-action="GiveCreditEmployee" asp-route-id="@user.Id">
-                                <button type="submit" class="btn btn-warning">Give Credit Employee Role</button>
+                            <form class="buttonformsadmin" asp-area="Admin" asp-controller="Employee" asp-action="GiveCreditEmployee" asp-route-id="@user.Id">
+                                <button type="submit" class="btn btn-warning">Credit</button>
                             </form>
-                            <form asp-area="Admin" asp-controller="Employee" asp-action="GiveCustomerRole" asp-route-id="@user.Id">
-                                <button type="submit" class="btn btn-primary">Give Customer Role</button>
+                            <form class="buttonformsadmin" asp-area="Admin" asp-controller="Employee" asp-action="GiveCustomerRole" asp-route-id="@user.Id">
+                                <button type="submit" class="btn btn-primary">Customer</button>
                             </form>
                         }
                         @if (await userManager.IsInRoleAsync(user, SD.Role_BillEmployee))
                         {
-                            <form asp-area="Admin" asp-controller="Employee" asp-action="GiveTaxEmployee" asp-route-id="@user.Id">
-                                <button type="submit" class="btn btn-success">Give Tax Employee Role</button>
+                            <form class="buttonformsadmin" asp-area="Admin" asp-controller="Employee" asp-action="GiveTaxEmployee" asp-route-id="@user.Id">
+                                <button type="submit" class="btn btn-success">Tax</button>
                             </form>
-                            <form asp-area="Admin" asp-controller="Employee" asp-action="GiveCreditEmployee" asp-route-id="@user.Id">
-                                <button type="submit" class="btn btn-warning">Give Credit Employee Role</button>
+                            <form class="buttonformsadmin" asp-area="Admin" asp-controller="Employee" asp-action="GiveCreditEmployee" asp-route-id="@user.Id">
+                                <button type="submit" class="btn btn-warning">Credit</button>
                             </form>
-                            <form asp-area="Admin" asp-controller="Employee" asp-action="GiveCustomerRole" asp-route-id="@user.Id">
-                                <button type="submit" class="btn btn-primary">Give Customer Role</button>
+                            <form class="buttonformsadmin" asp-area="Admin" asp-controller="Employee" asp-action="GiveCustomerRole" asp-route-id="@user.Id">
+                                <button type="submit" class="btn btn-primary"> Customer</button>
                             </form>
                         }
                         @if (await userManager.IsInRoleAsync(user, SD.Role_CreditEmployee))
                         {
-                            <form asp-area="Admin" asp-controller="Employee" asp-action="GiveTaxEmployee" asp-route-id="@user.Id">
-                                <button type="submit" class="btn btn-success">Give Tax Employee Role</button>
+                            <form class="buttonformsadmin" asp-area="Admin" asp-controller="Employee" asp-action="GiveTaxEmployee" asp-route-id="@user.Id">
+                                <button type="submit" class="btn btn-success">Tax</button>
                             </form>
-                            <form asp-area="Admin" asp-controller="Employee" asp-action="GiveBillEmployee" asp-route-id="@user.Id">
-                                <button type="submit" class="btn btn-info">Give Bill Employee Role</button>
+                            <form class="buttonformsadmin" asp-area="Admin" asp-controller="Employee" asp-action="GiveBillEmployee" asp-route-id="@user.Id">
+                                <button type="submit" class="btn btn-info">Employee</button>
                             </form>
-                            <form asp-area="Admin" asp-controller="Employee" asp-action="GiveCustomerRole" asp-route-id="@user.Id">
-                                <button type="submit" class="btn btn-primary">Give Customer Role</button>
+                            <form class="buttonformsadmin" asp-area="Admin" asp-controller="Employee" asp-action="GiveCustomerRole" asp-route-id="@user.Id">
+                                <button type="submit" class="btn btn-primary">Customer</button>
                             </form>
                         }
                     }
                     else
                     {
-                        <p class="text-dark">Admin. You do not need a role, bro</p>
+                        <p class="text-dark">Already admin</p>
                     }
                 </td>
-                <td>
-                    @if (!await userManager.IsInRoleAsync(user, SD.Role_Admin))
-                    {
-                        if (user.CardEntity != null)
-                        {
-                            <form asp-action="DeleteAllUsers" asp-controller="Employee" asp-route-id="@user.Id">
-                                <button type="submit">Delete this user</button>
-                            </form>
-                        }
-                        else
-                        {
-                            <p>This customer does not have a card</p>
-                        }
-                    }
-                    else
-                    {
-                        <p class="text-dark">Admin. You do not need to delete yourself, bro</p>
-                    }
-                </td>
-
                 <td>
                     @if (!await userManager.IsInRoleAsync(user, SD.Role_Admin))
                     {
@@ -143,7 +128,7 @@
                     @if(!await userManager.IsInRoleAsync(user, SD.Role_Admin))
                     {
                         <form asp-action="DeleteUser" asp-controller="Employee" asp-area="Admin" asp-route-id="@user.Id">
-                            <button type="submit">Delete this user</button>
+                            <button class="btn btn-danger" type="submit">Delete</button>
                         </form>
                     }
                     else
