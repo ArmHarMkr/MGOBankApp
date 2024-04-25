@@ -208,7 +208,7 @@ else
     }
     <div class="container">
         <div class="row">
-            <div style="height:800px;"class="col-6">
+            <div style="height:auto;"class="col-6">
                 <div class="row row-margin">
                     <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
                     <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
@@ -231,42 +231,8 @@ else
                 </div>
             </div>
 
-            <div style="height:800px;" class="col-6 d-flex align-items-center">
+            <div style="height:auto;" class="col-6 d-flex align-items-center">
 
-@* <div class="credit-card-wrap">
-  <div class="mk-icon-world-map"></div>
-  <div class="credit-card-inner">
-    <header class="header">
-      <div class="credit-logo">
-                    <div class="shape" style="color:#444;"><span class="txt">MGO</span></div> <span class="text">Public Bank of Armenia</span>
-      </div>
-    </header>
-            <div class="mk-balance-icon">
-                <div class="mk-icon-sim"></div>
-                <div class="mk-balance">
-                    <div id="balance">******** AMD</div>
-                    <div id="open_balance">@Model.CardEntity.AccessibleMoney AMD</div>
-                    <i id="toggleButton" class="eye-icon zmdi zmdi-eye"></i>
-                </div>
-            </div>
-            <div class="credit-font credit-card-number" data-text="@Model.CardEntity.CardNum.Substring(0, 4)">
-                @Model.CardEntity.CardNum.Substring(0, 4) 
-                @Model.CardEntity.CardNum.Substring(4, 4)
-                @Model.CardEntity.CardNum.Substring(8, 4)
-                @Model.CardEntity.CardNum.Substring(12, 4)
-            </div>
-    <footer class="footer">
-      <div class="clearfix">
-        <div class="pull-left">
-          <div class="credit-card-date"><span class="title">Expires End</span><span class="credit-font">0@{@Model.CreatingTime.Month}/@(Model.CreatingTime.AddYears(5).Year - 2000)</span></div>
-          <div class="credit-font credit-author">@Model.FullName.ToUpper()</div>
-        </div>
-        <div class="pull-right"><div class="mk-icon-system">
-        </div></div>
-      </div>
-    </footer>
-  </div>
-</div> *@
 <div class="container-card">
                     <div class="card-wrap">
                         <div class="card-inner">
