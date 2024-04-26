@@ -58,17 +58,17 @@ namespace MGOBankApp.Areas.Employee.Controllers
 
 
         [HttpPost("CheckOrder")]
-        public async Task<IActionResult> CheckOrder(string? id)
+        public async Task<IActionResult> CheckOrder()
         {
-            OrderTicketEntity order = _unitOfWork.OrderTicket.Get(o => o.OrderTicketId == id);
-            if (order == null) { return BadRequest("No ticket found"); }
+            OrderTicketEntity lastOrder = await _db.OrderTickets.OrderByDescending(c => c.OrderDate).LastAsync();
+            if (lastOrder == null) { return BadRequest("No ticket found"); }
 
-            order.IsDone = true;
-            _db.OrderTickets.Update(order);
+            lastOrder.IsDone = true;
+            _db.OrderTickets.Update(lastOrder);
             await _unitOfWork.Save();
             
-            if(order.OrderService == Domain.Enum.Services.Credit){ return RedirectToAction("CreditServices"); }
-            else if(order.OrderService == Domain.Enum.Services.Tax) { return RedirectToAction("TaxServices"); }
+            if(lastOrder.OrderService == Domain.Enum.Services.Credit){ return RedirectToAction("CreditServices"); }
+            else if(lastOrder.OrderService == Domain.Enum.Services.Tax) { return RedirectToAction("TaxServices"); }
             else { return RedirectToAction("BillServices"); }
         }
     }

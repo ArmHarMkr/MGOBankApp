@@ -16,6 +16,9 @@
 }
 else
 {
+    <form asp-action="CheckOrder" asp-controller="ManageService">
+        <button class="btn btn-info text-light" type="submit">Manage Order</button>
+    </form>
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr>
@@ -36,11 +39,6 @@ else
                     <td>@order.AppUser.Email</td>
                     <td>@order.OrderDate</td>
                     <td>@order.OrderService.ToString() @order.OrderNumber </td>
-                    <td>
-                        <form asp-action="CheckOrder" asp-controller="ManageService" asp-route-id="@order.OrderTicketId">
-                            <button class="btn btn-info text-light" type="submit">Manage Order</button>
-                        </form>
-                    </td>
                 </tr>
             }
         </tbody>

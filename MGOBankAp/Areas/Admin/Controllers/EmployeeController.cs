@@ -13,7 +13,7 @@ using Microsoft.Identity.Client;
 namespace MGOBankApp.Areas.Admin.Controllers
 {
     [Authorize(Roles = SD.Role_Admin)]
-    [Route("admin/{controller}")]
+    [Route("admin/{controller}/{view}")]
     [Area("Admin")]
     public class EmployeeController : Controller
     {
@@ -38,7 +38,7 @@ namespace MGOBankApp.Areas.Admin.Controllers
             IEnumerable<AppUser> allUsers = await _userManager.Users.ToListAsync();
             AppuserCardViewModel appuserCardViewModel = new();
             appuserCardViewModel.Users = allUsers;
-            return View(appuserCardViewModel);
+            return Json(appuserCardViewModel);
         }
 
         [HttpPost("GiveTaxEmployee")]
