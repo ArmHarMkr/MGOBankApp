@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MGOBankApp.Areas.Employee.Controllers
 {
-    [Authorize(Roles = "TaxEmployee, BillEmployee, CreditEmployee")]
+    [Authorize(Roles = SD.Role_TaxEmployee, SD.Role_BillEmployee, )]
     [Route("Employee/{controller}")]
     [Area("Employee")]
     public class ManageServiceController : Controller

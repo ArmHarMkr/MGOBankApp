@@ -35,11 +35,12 @@ async function fetchUsers() {
 fetchUsers();
 */
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('https://localhost:44322/Admin/Employee/UserApiView')
+    fetch('https://localhost:7160/Admin/Employee/AllUsersJson')
         .then(response => {
             if (!response.ok) {
                 console.log('Failed to fetch data');
             }
+            console.log(response.json());
             return response.json();
         })
         .then(data => {

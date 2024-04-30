@@ -1,0 +1,30 @@
+﻿@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@using MGOBankApp.Domain.Entity
+@using Microsoft.AspNetCore.Identity
+@model CardEntity
+@inject UserManager<AppUser> userManager
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="CheckingLogin" asp-controller="Home" asp-area="ATM">
+    <input asp-for="CardNum" placeholder="Type Card Number..."/>
+    <hr />
+
+    <input asp-for="PinCode" placeholder="Type PinCode" type="password" maxLength="4"/>
+
+</form>

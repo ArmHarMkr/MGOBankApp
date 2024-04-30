@@ -37,6 +37,8 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\ATM\Data\" />
+    <Folder Include="Areas\ATM\Models\" />
     <Folder Include="Areas\Employee\Data\" />
     <Folder Include="Areas\Employee\Models\" />
   </ItemGroup>

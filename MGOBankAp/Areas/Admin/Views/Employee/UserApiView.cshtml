@@ -22,7 +22,28 @@
             <tbody id="userTableBody"></tbody>
         </table>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="AllUsers.js"></script>
+      <script>
+        fetch('https://localhost:7160/Admin/Employee/AllUsersJson')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Hello World")    
+                }
+                return response.json();
+            })
+            .then(data => {
+                data.users.forEach(user => {
+                    const row = `
+                            <tr>
+                                <td>${user.id}</td>
+                                <td>${user.fullName}</td>
+                                <td>${user.email}</td>
+                            </tr>`;
+                    document.getElementById('userTableBody').insertAdjacentHTML('beforeend', row);
+                });
+            })
+            .catch(error => {
+                console.log(error.message);
+            });
+      </script>
 </body>
 </html>

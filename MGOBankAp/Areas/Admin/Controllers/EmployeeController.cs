@@ -33,9 +33,12 @@ namespace MGOBankApp.Areas.Admin.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult AllUsers()
+        public async Task<IActionResult> AllUsers()
         {
-            return View();
+            IEnumerable<AppUser> allUsers = await _userManager.Users.ToListAsync();
+            AppuserCardViewModel appuserCardViewModel = new();
+            appuserCardViewModel.Users = allUsers;
+            return View(appuserCardViewModel);
         }
 
         public IActionResult UserApiView()
