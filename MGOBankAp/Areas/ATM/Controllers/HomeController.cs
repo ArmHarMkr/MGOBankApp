@@ -37,8 +37,21 @@ namespace MGOBankApp.Areas.ATM.Controllers
             AppUser exampleUser = await _userManager.GetUserAsync(User);
             AppUser currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
             CardEntity currentCard = currentUser.CardEntity;
+            if(currentCard == null)
+            {
+                TempData["SuccessMessage"] = "You don't have a card. Create it at first";
+                return RedirectToAction("LoginATM");
+            }
             
-
+            if(currentCard.CardNum == cardEntity.CardNum && currentCard.PinCode == cardEntity.PinCode)
+            {
+                return RedirectToAction("MainATM");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Wrong Card Num or Pin Code";
+                return RedirectToAction("LoginATM");
+            }
         }
     }
 }

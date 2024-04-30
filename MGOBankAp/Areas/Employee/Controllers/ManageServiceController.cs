@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MGOBankApp.Areas.Employee.Controllers
 {
-    [Authorize(Roles = SD.Role_TaxEmployee, SD.Role_BillEmployee, )]
+    [Authorize]
     [Route("Employee/{controller}")]
     [Area("Employee")]
     public class ManageServiceController : Controller
@@ -46,12 +46,12 @@ namespace MGOBankApp.Areas.Employee.Controllers
             return View(allTaxes);
         }
 
-        [Authorize(Roles = "BillService")]
+        [Authorize(Roles = SD.Role_BillEmployee)]
         [HttpGet("BillServices")]
         public async Task<IActionResult> BillServices()
         {
             IEnumerable<OrderTicketEntity> allBills = _db.OrderTickets.Include(o => o.AppUser)
-                                                                        .Where(o => o.OrderService == Domain.Enum.Services.Credit)
+                                                                        .Where(o => o.OrderService == Domain.Enum.Services.Bill)
                                                                         .Where(o => o.IsDone == false);
             return View(allBills);
         }
@@ -60,7 +60,7 @@ namespace MGOBankApp.Areas.Employee.Controllers
         [HttpPost("CheckOrder")]
         public async Task<IActionResult> CheckOrder()
         {
-            OrderTicketEntity lastOrder = await _db.OrderTickets.OrderByDescending(c => c.OrderDate).LastAsync();
+            OrderTicketEntity lastOrder = await _db.OrderTickets.Where(o => o.IsDone == false).OrderByDescending(c => c.OrderDate).LastAsync();
             if (lastOrder == null) { return BadRequest("No ticket found"); }
 
             lastOrder.IsDone = true;
