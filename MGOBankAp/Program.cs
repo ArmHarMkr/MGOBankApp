@@ -57,7 +57,7 @@ app.MapControllerRoute(
 app.MapAreaControllerRoute(
     name: "admin_area",
     areaName: "Admin",
-    pattern: "admin/{controller=Home}/{action=Index}/{id?}"
+    pattern: "Admin/{controller=Home}/{action=Index}/{id?}"
 );
 
 var logger = app.Services.GetService<ILogger<Program>>();
