@@ -51,7 +51,7 @@ namespace MGOBankApp.Areas.Admin.Controllers
             IEnumerable<AppUser> allUsers = await _userManager.Users.ToListAsync();
             AppuserCardViewModel appuserCardViewModel = new();
             appuserCardViewModel.Users = allUsers;
-            return Json(appuserCardViewModel);
+            return View(appuserCardViewModel);
         }
 
         [HttpPost("GiveTaxEmployee")]

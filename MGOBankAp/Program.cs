@@ -60,6 +60,13 @@ app.MapAreaControllerRoute(
     pattern: "Admin/{controller=Home}/{action=Index}/{id?}"
 );
 
+app.MapAreaControllerRoute(
+    name: "atm_area",
+    areaName: "ATM",
+    pattern: "ATM/{controller=Home}/{action=LoginATM}"
+);
+
+
 var logger = app.Services.GetService<ILogger<Program>>();
 logger.LogInformation("Starting program...");
 
