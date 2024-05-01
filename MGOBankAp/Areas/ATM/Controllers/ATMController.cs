@@ -33,10 +33,6 @@ namespace MGOBankApp.Areas.ATM.Controllers
         [HttpPost("CheckingLogin")]
         public async Task<IActionResult> CheckingLogin(CardEntity cardEntity)
         {
-            if (cardEntity != null)
-            {
-                TempData["ErrorMessage"] = "No card found";
-            }
             AppUser exampleUser = await _userManager.GetUserAsync(User);
             AppUser currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
             CardEntity currentCard = currentUser.CardEntity;
@@ -59,9 +55,12 @@ namespace MGOBankApp.Areas.ATM.Controllers
 
 
         [HttpGet("MainATM")]
-        public IActionResult MainATM()
+        public async Task<IActionResult> MainATM()
         {
-            return View();
+            AppUser exampleUser = await _userManager.GetUserAsync(User);
+            AppUser currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
+            CardEntity currentCard = currentUser.CardEntity;
+            return View(currentCard);
         }
 
         [HttpPost("ChangePassword")]
@@ -136,6 +135,24 @@ namespace MGOBankApp.Areas.ATM.Controllers
             {
                 return BadRequest(ex.Message.ToString());
             }
+        }
+
+        public async Task<IActionResult> ShowBalance(string? id)
+        {
+            CardEntity? currentCard = _unitOfWork.Card.Get(c => c.CardId == id);
+            AppUser? exampleUser = await _userManager.GetUserAsync(User);
+            AppUser? currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
+            if(currentUser?.CardEntity != currentCard)
+            {
+                return BadRequest("DO NOT WATCH OTHERS CARD BALANCE");
+            }
+
+            if (currentCard == null)
+            {
+                TempData["ErrorMessage"] = "No card found";
+                return View("MainATM");
+            }
+            return View(currentCard);
         }
     }
 }

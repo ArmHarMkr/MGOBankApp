@@ -1,4 +1,7 @@
-﻿@{
+﻿@model CardEntity
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<a asp-action="ShowBalance" asp-area="ATM" asp-controller="ATM" asp-route-id="@Model.CardId">Show Balance</a>
