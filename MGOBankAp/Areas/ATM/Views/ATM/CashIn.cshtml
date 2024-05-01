@@ -1,0 +1,11 @@
+﻿@model CardEntity
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<form asp-action="CashIn" asp-controller="ATM" asp-area="ATM">
+    <input asp-for="AccessibleMoney" type="number" placeholder="Type money withdraw money amount" />
+    <button type="submit">Cash in money</button>
+</form>

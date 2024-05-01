@@ -10,7 +10,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
 {
     [Authorize]
     [Area("ATM")]
-    [Route("ATM/[controller]/[action]")]
+    [Route("{controller}/{action}")]
     public class ATMController : Controller
     {
         private readonly AppDbContext _db;
@@ -63,8 +63,27 @@ namespace MGOBankApp.Areas.ATM.Controllers
             return View(currentCard);
         }
 
-        [HttpPost("ChangePassword")]
-        public async Task<IActionResult> ChangePassword(CardEntity cardEntity)
+        [HttpGet("ChangePinCode")]
+        public async Task<IActionResult> ChangePinCode(string? id)
+        {
+            CardEntity? currentCard = _unitOfWork.Card.Get(c => c.CardId == id);
+            AppUser? exampleUser = await _userManager.GetUserAsync(User);
+            AppUser? currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
+            if (currentUser?.CardEntity != currentCard)
+            {
+                return BadRequest("DO NOT CHANGE OTHERS CARD PIN CODE");
+            }
+
+            if (currentCard == null)
+            {
+                TempData["ErrorMessage"] = "No card found";
+                return View("MainATM");
+            }
+            return View(currentCard);
+        }
+
+        [HttpPost("ChangePinCode")]
+        public async Task<IActionResult> ChangePinCode(CardEntity cardEntity)
         {
             AppUser exampleUser = await _userManager.GetUserAsync(User);
             AppUser currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
@@ -73,6 +92,27 @@ namespace MGOBankApp.Areas.ATM.Controllers
 
             currentCard.PinCode = cardEntity.PinCode;
             return View("MainATM");
+        }
+
+
+
+        [HttpGet("WithdrawCash")]
+        public async Task<IActionResult> WithdrawCash(string? id)
+        {
+            CardEntity? currentCard = _unitOfWork.Card.Get(c => c.CardId == id);
+            AppUser? exampleUser = await _userManager.GetUserAsync(User);
+            AppUser? currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
+            if (currentUser?.CardEntity != currentCard)
+            {
+                return BadRequest("DO NOT CHANGE OTHERS CARD PIN CODE");
+            }
+
+            if (currentCard == null)
+            {
+                TempData["ErrorMessage"] = "No card found";
+                return View("MainATM");
+            }
+            return View(currentCard);
         }
 
         [HttpPost("WithdrawCash")]
@@ -110,6 +150,27 @@ namespace MGOBankApp.Areas.ATM.Controllers
                 return BadRequest(ex.Message.ToString());
             }
         }
+
+
+        [HttpGet("CashIn")]
+        public async Task<IActionResult> CashIn(string? id)
+        {
+            CardEntity? currentCard = _unitOfWork.Card.Get(c => c.CardId == id);
+            AppUser? exampleUser = await _userManager.GetUserAsync(User);
+            AppUser? currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
+            if (currentUser?.CardEntity != currentCard)
+            {
+                return BadRequest("DO NOT CHANGE OTHERS CARD PIN CODE");
+            }
+
+            if (currentCard == null)
+            {
+                TempData["ErrorMessage"] = "No card found";
+                return View("MainATM");
+            }
+            return View(currentCard);
+        }
+
 
         public async Task<IActionResult> CashIn(CardEntity cardEntity)
         {

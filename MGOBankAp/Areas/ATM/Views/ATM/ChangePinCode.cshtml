@@ -1,0 +1,12 @@
+﻿@model CardEntity
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<form asp-action="ChangePinCode" asp-controller="ATM">
+    <input asp-for="@Model.PinCode" placeholder="Type new Password" maxlength="4"/>
+    <span asp-validation-for="PinCode" class="text-danger small"></span>
+    <button type="submit">Change Pin Code</button>
+</form>
