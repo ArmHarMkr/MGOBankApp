@@ -4,7 +4,50 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<a asp-action="ShowBalance" asp-area="ATM" asp-controller="ATM" asp-route-id="@Model.CardId">Show Balance</a>
-<a asp-action="ChangePinCode" asp-area="ATM" asp-controller="ATM" asp-route-id="@Model.CardId">Change Pin Code</a>
-<a asp-action="WithdrawCash" asp-area="ATM" asp-controller="ATM" asp-route-id="@Model.CardId">Withdraw Cash</a>
-<a asp-action="CashIn" asp-area="ATM" asp-controller="ATM" asp-route-id="@Model.CardId">Cash In</a>
+
+<form asp-action="CashIn" asp-controller="ATM" asp-area="ATM">
+    <input class="form-control" style="width:179px; display:inline;" asp-for="@Model.AccessibleMoney" placeholder="Add to balance" />
+    <button class="btn btn-success btn-sm" type="submit">Add</button>
+</form>
+
+<hr />
+
+<form asp-action="WithdrawCash" asp-controller="ATM" asp-area="ATM">
+    <input class="form-control" style="width:179px; display:inline;" asp-for="@Model.AccessibleMoney" placeholder="Withdraw from balance" />
+    <button class="btn btn-success btn-sm" type="submit">Withdraw</button>
+</form>
+
+<hr />
+
+<form asp-action="ChangePinCode" asp-controller="ATM" asp-area="ATM">
+    <input class="form-control" style="width:179px; display:inline;" asp-for="@Model.PinCode" placeholder="Change PinCode" />
+    <button class="btn btn-success btn-sm" type="submit">Change Pin Code</button>
+</form>
+
+<div class="mk-balance">
+    <div id="balance">******** AMD</div>
+    <div id="open_balance">@Model.AccessibleMoney AMD</div>
+    <i id="toggleButton" class="eye-icon zmdi zmdi-eye"></i>
+</div>
+
+<script>
+    const balanceDiv = document.getElementById('balance');
+    const openBalanceDiv = document.getElementById('open_balance');
+    const eyeIcon = document.getElementById('toggleButton');
+
+    eyeIcon.addEventListener('click', function () {
+        if (balanceDiv.style.display === 'inline') {
+            balanceDiv.style.display = 'none';
+            openBalanceDiv.style.display = 'inline';
+            eyeIcon.classList.remove('zmdi-eye');
+            eyeIcon.classList.add('zmdi-eye-off');
+            eyeIcon.classList.add('hidden');
+        } else {
+            balanceDiv.style.display = 'inline';
+            openBalanceDiv.style.display = 'none';
+            eyeIcon.classList.remove('zmdi-eye-off');
+            eyeIcon.classList.add('zmdi-eye');
+            eyeIcon.classList.remove('hidden');
+        }
+    });
+</script>
