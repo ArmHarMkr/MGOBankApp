@@ -16,7 +16,7 @@ namespace MGOBankApp.DAL.Data
 
         public DbSet<CardEntity> Cards { get; set; }
         public DbSet<OrderTicketEntity> OrderTickets { get; set; }
-
+        public DbSet<TransactionEntity> Transactions { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

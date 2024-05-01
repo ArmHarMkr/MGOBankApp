@@ -1,181 +1,165 @@
 ﻿@using MGOBankApp.Domain.Entity
+@using MGOBankApp.ViewModels
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<AppUser> userManager
-@model AppUser
-
+@model TransactionAppUserViewModel
 
 @{
     ViewData["Title"] = "Home Page";
 }
-@* .mk-icon-world-map{
-TODO>>>>>>>>>>>>>>>>>>>>>>  background-image:url *@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 
 <style>
-   
+
     /* for card */
 
     import url('https://fonts.googleapis.com/css2?family=josefin+Sans:wght@400;500;600;700&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Josefin Sans', sans-serif;
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Josefin Sans', sans-serif;
+    }
 
-/* .container-card img{
-    min-height: 100vh;
-    width: 100%;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */
+    .card-wrap {
+        width: 500px;
+        height: 300px;
+        color: #fff;
+        cursor: pointer;
+        perspective: 1000px;
+    }
 
-.card-wrap {
-    width: 500px;
-    height: 300px;
-    color: #fff;
-    cursor: pointer;
-    perspective: 1000px;
-}
+    .card-inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transition: transform 1s;
+        transform-style: preserve-3d;
+    }
 
-.card-inner {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transition: transform 1s;
-    transform-style: preserve-3d;
-}
+    .front, .back {
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(45deg, #0045c7, #ff2c7d);
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 20px 30px;
+        border-radius: 15px;
+        overflow: hidden;
+        z-index: 1;
+        backface-visibility: hidden;
+    }
 
-.front, .back {
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(45deg, #0045c7, #ff2c7d);
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 20px 30px;
-    border-radius: 15px;
-    overflow: hidden;
-    z-index: 1;
-    backface-visibility: hidden;
-}
+    .row-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-.row-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+    .map-img {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0.3;
+        z-index: -1;
+    }
 
-.map-img {
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0.3;
-    z-index: -1;
-}
+    .card-no {
+        font-size: 35px;
+        margin-top: 60px;
+    }
 
-.card-no {
-    font-size: 35px;
-    margin-top: 60px;
-}
+    .card-holder {
+        font-size: 12px;
+    }
 
-.card-holder {
-    font-size: 12px;
-}
-.mk-balance{
-    text-align:center;
-    font-size:15px;
-}
-.name {
-    font-size: 22px;
-}
+    .mk-balance {
+        text-align: center;
+        font-size: 15px;
+    }
 
-.bar {
-    background: #222;
-    margin-left: -30px;
-    margin-right: -30px;
-    height: 60px;
-}
+    .name {
+        font-size: 22px;
+    }
+
+    .bar {
+        background: #222;
+        margin-left: -30px;
+        margin-right: -30px;
+        height: 60px;
+    }
 
 
-.card-cvv div {
-    flex: 1;
-}
+    .card-cvv div {
+        flex: 1;
+    }
 
-.card-cvv img {
-    width: 100%;
-    display: block;
-    line-height: 0;
-}
+    .card-cvv img {
+        width: 100%;
+        display: block;
+        line-height: 0;
+    }
 
-.card-cvv p {
-    background: #fff;
-    color: #000;
-    font-size: 22px;
-    padding: 2px 20px;
-}
+    .card-cvv p {
+        background: #fff;
+        color: #000;
+        font-size: 22px;
+        padding: 2px 20px;
+    }
 
-.card-text {
-    font-size: 14px;
-    margin-top:10px;
-}
+    .card-text {
+        font-size: 14px;
+        margin-top: 10px;
+    }
 
-.signature {
-}
+    .signature {
+    }
 
-.back {
-    transform: rotateY(180deg);
-}
+    .back {
+        transform: rotateY(180deg);
+    }
 
     .card-wrap:hover .card-inner {
-    transform: rotateY(-180deg);
-}
+        transform: rotateY(-180deg);
+    }
     /* end card */
 
-    #balance {
-        display: inline;
+
+    .payment {
+        width: 150px;
+        height: 150px;
+        border: 1px solid grey;
+        border-radius: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-wrap: wrap;
     }
 
-    #open_balance {
-        display: none;
+    .payment-link {
+        text-decoration: none;
+        color: black;
     }
 
-    .eye-icon {
-        cursor: pointer;
-        font-size: 24px;
-        margin: 10px;
+        .payment-link:hover {
+            color: dimgrey;
+            transition: 0.7s;
+        }
+
+    .row-margin {
+        margin-top: 25px;
+        margin-bottom: 25px;
     }
-    .payment{
-    width:150px;
-    height:150px;
-    border:1px solid grey;
-    border-radius:15px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    flex-wrap:wrap;
-    }
-    .payment-link{
-        text-decoration:none;
-        color:black;
-    }.payment-link:hover{
-        color:dimgrey;
-        transition:0.7s;
-    }
-    .row-margin{
-        margin-top:25px;
-        margin-bottom:25px;
-    }
-    .back{
-        padding:10px 30px;
+
+    .back {
+        padding: 10px 30px;
     }
 </style>
-@if (Model.CardEntity == null)
+@if (Model.AppUser.CardEntity == null)
 {
     <form asp-action="CreateCard" asp-controller="Home">
         <select name="PaymentSystem" id="PaymentSystem">
@@ -191,7 +175,7 @@ TODO>>>>>>>>>>>>>>>>>>>>>>  background-image:url *@
 else
 {
     string imgLink = "";
-    @switch (Model.CardEntity.PaymentSystem)
+    @switch (Model.AppUser.CardEntity.PaymentSystem)
     {
         case MGOBankApp.Domain.Enum.PaymentSystem.AmericanExpress:
             imgLink = "americanexpress.png";
@@ -208,32 +192,44 @@ else
     }
     <div class="container">
         <div class="row">
-            <div style="height:auto;"class="col-6">
-                <div class="row row-margin">
-                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
-                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
-                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
-                </div>
-                <div class="row row-margin">
-                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
-                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
-                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
-                </div>
-                <div class="row row-margin">
-                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
-                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
-                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
-                </div>
-                <div class="row row-margin">
-                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
-                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
-                    <div class="col d-flex justify-content-center align-items-center"><a class="payment-link" href="#"><div class="payment"><i class="zmdi zmdi-card zmdi-hc-4x"></i>Some Payment</div></a></div>
-                </div>
+            <div style="height:auto;" class="col-6">
+                @if(Model.AllTransactions.Count() == 0)
+                {
+                    <p>No transaction found</p>
+                }
+                else
+                {
+                    @foreach (var action in Model.AllTransactions)
+                    {
+                        <div class="row row-margin">
+                            <div class="col d-flex justify-content-center align-items-center">
+                                @if (action.TransactionType == MGOBankApp.Domain.Enum.TransactionType.Withdraw)
+                                {
+                                    <p style="color: red;">@action.TransactionType.ToString()</p>
+                                }
+                                else if (action.TransactionType == MGOBankApp.Domain.Enum.TransactionType.CashIn)
+                                {
+                                    <p style="color: green;">@action.TransactionType.ToString()</p>
+                                }
+                                else
+                                {
+                                    <p style="color: grey;">@action.TransactionType.ToString()</p>
+                                }
+                                <p>@action.TransactionId</p>
+                                <hr />
+                                <p>@action.AppUser.FullName</p>
+                                <hr />
+                                <p>@action.ActionTime</p>
+                            </div>
+                        </div>
+                    }
+                }
+
             </div>
 
             <div style="height:auto;" class="col-6 d-flex align-items-center">
 
-<div class="container-card">
+                <div class="container-card">
                     <div class="card-wrap">
                         <div class="card-inner">
                             <div class="front">
@@ -244,31 +240,28 @@ else
                                 </div>
 
                                 <div class="row-card card-no">
-                                    <p>@Model.CardEntity.CardNum.Substring(0, 4)</p>
-                                    <p>@Model.CardEntity.CardNum.Substring(4, 4)</p>
-                                    <p>@Model.CardEntity.CardNum.Substring(8, 4)</p>
-                                    <p>@Model.CardEntity.CardNum.Substring(12, 4)</p>
+                                    <p>@Model.AppUser.CardEntity.CardNum.Substring(0, 4)</p>
+                                    <p>@Model.AppUser.CardEntity.CardNum.Substring(4, 4)</p>
+                                    <p>@Model.AppUser.CardEntity.CardNum.Substring(8, 4)</p>
+                                    <p>@Model.AppUser.CardEntity.CardNum.Substring(12, 4)</p>
                                 </div>
                                 <div class="row-card card-holder">
                                     <p>CARD HOLDER</p>
                                     <p>VALID TILL</p>
                                 </div>
                                 <div class="row-card name">
-                                    <p>@Model.FullName.ToUpper()</p>
-                                    <p>0@{
-                                            @Model.CreatingTime.Month
-                                        } / @(Model.CreatingTime.AddYears(5).Year - 2000)</p>
+                                    <p>@Model.AppUser.FullName.ToUpper()</p>
+                                    <p>
+                                        0@{
+                                            @Model.AppUser.CreatingTime.Month
+                                        } / @(Model.AppUser.CreatingTime.AddYears(5).Year - 2000)
+                                    </p>
                                 </div>
                             </div>
                             <div class="back">
-                                <p style="margin-bottom:0px;">Bank Account Number - @Model.AccountNumber</p>
+                                <p style="margin-bottom:0px;">Bank Account Number - @Model.AppUser.AccountNumber</p>
                                 <img src="https://i.ibb.co/PYss3yv/map.png" class="map-img">
                                 <div class="bar"></div>
-@*                                 <div class="mk-balance">
-                                    <div id="balance">******** AMD</div>
-                                    <div id="open_balance">@Model.CardEntity.AccessibleMoney AMD</div>
-                                    <i id="toggleButton" class="eye-icon zmdi zmdi-eye"></i>
-                                </div> *@
                                 <div class="row-card card-cvv">
                                     <div>
                                         <img src="https://i.ibb.co/S6JG8px/pattern.png">
@@ -279,16 +272,16 @@ else
                                     <p>This card is property of MGO Bank. Call if you have found this card</p>
                                 </div>
                                 <div class="row-card signature">
-                                    <p>SIGNATURE - @Model.FullName.ToUpper()</p>
+                                    <p>SIGNATURE - @Model.AppUser.FullName.ToUpper()</p>
                                     <img src="~/img/banksystems/@imgLink" width="80px">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
             </div>
-           
+
         </div>
     </div>
 }

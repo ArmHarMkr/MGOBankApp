@@ -4,9 +4,11 @@ using MGOBankApp.DAL.Data;
 using MGOBankApp.DAL.Repository;
 using MGOBankApp.Domain.Entity;
 using MGOBankApp.Domain.Enum;
+using MGOBankApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Model.Tree;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Text;
@@ -41,15 +43,21 @@ namespace MGOBankAp.Controllers
         {
             AppUser myUser = await _userManager.GetUserAsync(User);
             AppUser currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u == myUser);
-            if (currentUser.CardEntity == null)
-            {
-                ViewBag.PaymentSystems = Enum.GetNames(typeof(PaymentSystem)).ToList();
-                return View(currentUser);
-            }
-            else
-            {
-                return View(currentUser);
-            }
+            TransactionAppUserViewModel transactionVM = new();
+            transactionVM.AppUser = currentUser;
+
+            transactionVM.CashInActions = _db.Transactions
+                                                          .Include(a => a.AppUser)
+                                                          .Where(a => a.TransactionType == TransactionType.CashIn);
+            transactionVM.WithdrawActions = _db.Transactions
+                                                            .Include(a => a.AppUser)
+                                                            .Where(a => a.TransactionType == TransactionType.Withdraw);
+            transactionVM.PinCodeChangeActions = _db.Transactions
+                                                                 .Include(a => a.AppUser)
+                                                                 .Where(a => a.TransactionType == TransactionType.ChangePinCode);
+            transactionVM.AllTransactions = _db.Transactions.Include(a => a.AppUser).OrderBy(c => c.ActionTime);
+            ViewBag.PaymentSystems = Enum.GetNames(typeof(PaymentSystem)).ToList();
+            return View(transactionVM);
         }
 
         [HttpPost("CreateCard")]
