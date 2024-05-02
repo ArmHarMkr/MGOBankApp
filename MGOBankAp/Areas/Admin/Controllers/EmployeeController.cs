@@ -114,6 +114,7 @@ namespace MGOBankApp.Areas.Admin.Controllers
                             if (userCard != null)
                             {
                                 _db.Cards.Remove(userCard);
+                                await _db.SaveChangesAsync();
                             }
                         }
 

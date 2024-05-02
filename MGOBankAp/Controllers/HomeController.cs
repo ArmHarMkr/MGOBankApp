@@ -19,13 +19,16 @@ namespace MGOBankAp.Controllers
         private readonly ICardNumberGenerator _cardNumberGenerator;
         private readonly AppDbContext _db;
         private readonly UserManager<AppUser> _userManager;
+        private readonly ICVVGenerator _cvvGenerator;
+
 
         public HomeController(
             ILogger<HomeController> logger,
             IUnitOfWork unitOfWork,
             AppDbContext db,
             UserManager<AppUser> userManager,
-            ICardNumberGenerator cardNumberGenerator
+            ICardNumberGenerator cardNumberGenerator,
+            ICVVGenerator cvvGenerator
             )
         {
             _logger = logger;
@@ -33,6 +36,7 @@ namespace MGOBankAp.Controllers
             _db = db;
             _userManager = userManager;
             _cardNumberGenerator = cardNumberGenerator;
+            _cvvGenerator = cvvGenerator;
         }
 
         public async Task<IActionResult> Index()
@@ -44,14 +48,21 @@ namespace MGOBankAp.Controllers
 
             transactionVM.CashInActions = _db.Transactions
                                                           .Include(a => a.AppUser)
+                                                          .Where(a => a.AppUser == currentUser)
                                                           .Where(a => a.TransactionType == TransactionType.CashIn);
             transactionVM.WithdrawActions = _db.Transactions
                                                             .Include(a => a.AppUser)
+                                                            .Where(a => a.AppUser == currentUser)
                                                             .Where(a => a.TransactionType == TransactionType.Withdraw);
             transactionVM.PinCodeChangeActions = _db.Transactions
                                                                  .Include(a => a.AppUser)
+                                                                 .Where(a => a.AppUser == currentUser)
                                                                  .Where(a => a.TransactionType == TransactionType.ChangePinCode);
-            transactionVM.AllTransactions = _db.Transactions.Include(a => a.AppUser).Where(a => a.AppUser == currentUser).OrderBy(c => c.ActionTime);
+            transactionVM.AllTransactions = _db.Transactions
+                                               .Include(a => a.AppUser)
+                                               .Where(a => a.AppUser == currentUser)
+                                               .OrderBy(a => a.ActionTime)
+                                               .OrderBy(c => c.ActionTime);
             ViewBag.PaymentSystems = Enum.GetNames(typeof(PaymentSystem)).ToList();
             return View(transactionVM);
         }
@@ -68,12 +79,12 @@ namespace MGOBankAp.Controllers
                     CardNum = _cardNumberGenerator.GenerateCardNumber(paymentSystem),
                     PinCode = "1234",
                     AccessibleMoney = 0,
-                    PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), paymentSystem)
+                    PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), paymentSystem),
+                    CardCVV = _cvvGenerator.GenerateCVV()
                 };
                 await _userManager.UpdateAsync(currentUser);
             }
             return RedirectToAction("Index");
         }
-
     }
 }

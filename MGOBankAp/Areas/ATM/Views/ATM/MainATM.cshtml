@@ -3,6 +3,23 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 <style>
     /* Your custom styles for ATM interface */
@@ -45,14 +62,14 @@
 </style>
 
 <form asp-action="CashIn" asp-controller="ATM" asp-area="ATM">
-    <input class="form-control" style="width:179px; display:inline;" value="@null"asp-for="@Model.AccessibleMoney" placeholder="Add to balance" />
+    <input class="form-control" style="width:179px; display:inline;" value="@null" asp-for="@Model.AccessibleMoney" min="100" placeholder="Add to balance" />
     <button class="btn btn-success btn-sm" type="submit">Add</button>
 </form>
 
 <hr />
 
 <form asp-action="WithdrawCash" asp-controller="ATM" asp-area="ATM">
-    <input class="form-control" value="@null" style="width:179px; display:inline;" asp-for="@Model.AccessibleMoney" placeholder="Withdraw from balance" />
+    <input class="form-control" value="@null" style="width:179px; display:inline;" min="100" asp-for="@Model.AccessibleMoney" placeholder="Withdraw from balance" />
     <button class="btn btn-success btn-sm" type="submit">Withdraw</button>
 </form>
 @* 

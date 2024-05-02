@@ -28,6 +28,7 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ILunaCounter, LunaCounter>();
+builder.Services.AddSingleton<ICVVGenerator, CVVGenerator>();
 builder.Services.AddTransient<ICardNumberGenerator, CardNumberGenerator>();
 
 //Adding background Service
@@ -37,24 +38,7 @@ builder.Services.AddControllersWithViews()
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-/*
-builder.Services.AddLocalization(options =>
-{
-    options.ResourcesPath = "Resources";
-});
 
-builder.Services.Configure<RequestLocalizationOptions>(options =>
-{
-    var supportedCultures = new[]
-    {
-        new CultureInfo("en-US")
-    };
-
-    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-US");
-    options.SupportedUICultures = supportedCultures;
-});
-
-app.UseRequestLocalization();*/
 
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())

@@ -43,8 +43,7 @@ namespace MGOBankApp.Controllers
                     ticketWindowVM.CreditTicketWindow.Add(order);
                 else
                     ticketWindowVM.TaxTicketWindow.Add(order);
-
-            }   
+            }
             return View(ticketWindowVM);
         }
 
@@ -52,9 +51,20 @@ namespace MGOBankApp.Controllers
         public async Task<IActionResult> AddBillService()
         {
             AppUser currentUser = await _userManager.GetUserAsync(User);
+            IEnumerable<OrderTicketEntity> allBills = await _db.OrderTickets
+                                                               .Where(o => o.OrderService == Domain.Enum.Services.Bill)
+                                                               .Where(o => o.IsDone)
+                                                               .ToListAsync();
             try
             {
-                await _orderTicket.BillService(currentUser);
+                if(allBills.Count() <= 10)
+                {
+                    await _orderTicket.BillService(currentUser);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Limit of tickets";
+                }
                 return RedirectToAction("AllOrders", "ServiceOrder");
             }
             catch (Exception ex)
@@ -67,9 +77,20 @@ namespace MGOBankApp.Controllers
         public async Task<IActionResult> AddCreditService()
         {
             AppUser currentUser = await _userManager.GetUserAsync(User);
+            IEnumerable<OrderTicketEntity> allCredits = await _db.OrderTickets
+                                                               .Where(o => o.OrderService == Domain.Enum.Services.Credit)
+                                                               .Where(o => o.IsDone)
+                                                               .ToListAsync();
             try
             {
-                await _orderTicket.CreditService(currentUser);
+                if (allCredits.Count() <= 10)
+                {
+                    await _orderTicket.CreditService(currentUser);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Limit of tickets";
+                }
                 return RedirectToAction("AllOrders", "ServiceOrder");
             }
             catch (Exception ex)
@@ -82,9 +103,20 @@ namespace MGOBankApp.Controllers
         public async Task<IActionResult> AddTaxService()
         {
             AppUser currentUser = await _userManager.GetUserAsync(User);
+            IEnumerable<OrderTicketEntity> allTaxes = await _db.OrderTickets
+                                                               .Where(o => o.OrderService == Domain.Enum.Services.Tax)
+                                                               .Where(o => o.IsDone)
+                                                               .ToListAsync();
             try
             {
-                await _orderTicket.TaxService(currentUser);
+                if (allTaxes.Count() <= 10)
+                {
+                    await _orderTicket.TaxService(currentUser);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Limit of tickets";
+                }
                 return RedirectToAction("AllOrders", "ServiceOrder");
             }
             catch (Exception ex)
