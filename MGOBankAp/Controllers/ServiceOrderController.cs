@@ -2,12 +2,14 @@
 using MGOBankApp.DAL.Repository;
 using MGOBankApp.Domain.Entity;
 using MGOBankApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace MGOBankApp.Controllers
 {
+    [Authorize]
     public class ServiceOrderController : Controller
     {
         private readonly AppDbContext _db;

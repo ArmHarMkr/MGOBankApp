@@ -59,6 +59,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
             AppUser currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
             CardEntity currentCard = currentUser.CardEntity;
             currentCard.AccessibleMoney = currentUser.CardEntity.AccessibleMoney;
+
             return View(currentUser.CardEntity);
         }
 
@@ -118,6 +119,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
                         TransactionEntity withdrawAction = new TransactionEntity();
                         withdrawAction.AppUser = currentUser;
                         withdrawAction.TransactionType = Domain.Enum.TransactionType.Withdraw;
+                        withdrawAction.ChangingMoney = cardEntity.AccessibleMoney;
                         await _unitOfWork.Transaction.Add(withdrawAction);
                         await _unitOfWork.Save();
 
@@ -156,6 +158,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
                     TransactionEntity cashInAction = new TransactionEntity();
                     cashInAction.AppUser = currentUser;
                     cashInAction.TransactionType = Domain.Enum.TransactionType.CashIn;
+                    cashInAction.ChangingMoney = cardEntity.AccessibleMoney;
                     await _unitOfWork.Transaction.Add(cashInAction);
                     await _unitOfWork.Save();
 

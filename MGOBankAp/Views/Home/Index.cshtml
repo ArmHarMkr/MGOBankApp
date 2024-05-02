@@ -1,7 +1,9 @@
 ﻿@using MGOBankApp.Domain.Entity
 @using MGOBankApp.ViewModels
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject UserManager<AppUser> userManager
+@inject IViewLocalizer Localizer
 @model TransactionAppUserViewModel
 
 @{
@@ -158,6 +160,135 @@
     .back {
         padding: 10px 30px;
     }
+
+    .table-wrapper {
+        margin: 10px 70px 70px;
+    }
+    /* for table */
+    .fl-table {
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: normal;
+        border: none;
+        border-collapse: collapse;
+        width: auto;
+        max-width: 100%;
+        white-space: nowrap;
+        background-color: white;
+    }
+
+        .fl-table td, .fl-table th {
+            text-align: center;
+            padding: 8px;
+        }
+
+        .fl-table td {
+            border-right: 1px solid #f8f8f8;
+            font-size: 12px;
+        }
+
+        .fl-table thead th {
+            color: #ffffff;
+            background: #4FC3A1;
+        }
+
+
+            .fl-table thead th:nth-child(odd) {
+                width: 75%;
+                color: #ffffff;
+                background: #324960;
+            }
+
+        .fl-table tr:nth-child(even) {
+            background: #F8F8F8;
+            width: 25%;
+        }
+
+    /* Responsive */
+
+    media (max-width: 767px) {
+        .fl-table
+
+    {
+        display: block;
+        width: 100%;
+    }
+
+    .table-wrapper:before {
+        content: "Scroll horizontally >";
+        display: block;
+        text-align: right;
+        font-size: 11px;
+        color: white;
+        padding: 0 0 10px;
+    }
+
+    .fl-table thead, .fl-table tbody, .fl-table thead th {
+        display: block;
+    }
+
+        .fl-table thead th:last-child {
+            border-bottom: none;
+        }
+
+    .fl-table thead {
+        float: left;
+    }
+
+    .fl-table tbody {
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+    }
+
+    .fl-table td, .fl-table th {
+        padding: 20px .625em .625em .625em;
+        height: 60px;
+        vertical-align: middle;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 120px;
+        font-size: 13px;
+        text-overflow: ellipsis;
+    }
+
+    .fl-table thead th {
+        text-align: left;
+        border-bottom: 1px solid #f7f7f9;
+    }
+
+    .fl-table tbody tr {
+        display: table-cell;
+    }
+
+        .fl-table tbody tr:nth-child(odd) {
+            background: none;
+            width: 75%;
+        }
+
+    .fl-table tr:nth-child(even) {
+        background: transparent;
+        width: 25%;
+    }
+
+    .fl-table tr td:nth-child(odd) {
+        background: #F8F8F8;
+        width: 75%;
+        border-right: 1px solid #E6E4E4;
+    }
+
+    .fl-table tr td:nth-child(even) {
+        border-right: 1px solid #E6E4E4;
+        width: 25%;
+    }
+
+    .fl-table tbody td {
+        display: block;
+        text-align: center;
+    }
+
+    }
 </style>
 @if (Model.AppUser.CardEntity == null)
 {
@@ -193,38 +324,69 @@ else
     <div class="container">
         <div class="row">
             <div style="height:auto;" class="col-6">
-                @if(Model.AllTransactions.Count() == 0)
-                {
-                    <p>No transaction found</p>
-                }
-                else
-                {
-                    @foreach (var action in Model.AllTransactions)
-                    {
-                        <div class="row row-margin">
-                            <div class="col d-flex justify-content-center align-items-center">
-                                @if (action.TransactionType == MGOBankApp.Domain.Enum.TransactionType.Withdraw)
-                                {
-                                    <p style="color: red;">@action.TransactionType.ToString()</p>
-                                }
-                                else if (action.TransactionType == MGOBankApp.Domain.Enum.TransactionType.CashIn)
-                                {
-                                    <p style="color: green;">@action.TransactionType.ToString()</p>
-                                }
-                                else
-                                {
-                                    <p style="color: grey;">@action.TransactionType.ToString()</p>
-                                }
-                                <p>@action.TransactionId</p>
-                                <hr />
-                                <p>@action.AppUser.FullName</p>
-                                <hr />
-                                <p>@action.ActionTime</p>
-                            </div>
-                        </div>
-                    }
-                }
+                
+                <table class="fl-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Operation</th>
+                            <th>Date</th>
+                            <th>Money</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
 
+                            @if (Model.AllTransactions.Count() == 0)
+                            {
+                                <p>No transaction found</p>
+                            }
+                            else{
+                                
+                                @foreach(var item in Model.AllTransactions)
+                                {
+                                    
+                                    <tr>
+                                        <td>@item.AppUser.FullName</td>
+                                        @if (item.TransactionType == MGOBankApp.Domain.Enum.TransactionType.Withdraw)
+                                        {
+                                            <td style="color:red">@item.TransactionType</td>
+                                        }
+                                        else if (item.TransactionType == MGOBankApp.Domain.Enum.TransactionType.CashIn)
+                                        {
+                                            <td style="color:limegreen">@item.TransactionType</td>
+                                        }
+                                        else
+                                        {
+                                            <td style="color:grey">@item.TransactionType</td>
+                                        }
+                                        <td>@item.ActionTime</td>
+                                        <td>@item.ChangingMoney</td>
+                                    </tr>
+                                }
+
+                        }
+                           }
+                      @*   @{
+                            int limit = 1;
+                          //  var orders = Model.AllUsersOrders;
+                        }
+                        @if (true)
+                        {
+                            @for (int i = 0; i < 10; i++)
+                            {
+                                @if (i < limit)
+                                {
+                                    <tr>
+
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            }
+                        } *@
+                    <tbody>
+                </table>
             </div>
 
             <div style="height:auto;" class="col-6 d-flex align-items-center">

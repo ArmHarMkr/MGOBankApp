@@ -14,6 +14,7 @@ namespace MGOBankApp.Domain.Entity
         public string TransactionId { get; set; } = Guid.NewGuid().ToString();
         public AppUser AppUser { get; set; }
         public TransactionType TransactionType { get; set; }
+        public double ChangingMoney { get; set; }
         public DateTime ActionTime { get; set; } = DateTime.Now;
     }
 }

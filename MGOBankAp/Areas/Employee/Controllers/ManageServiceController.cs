@@ -26,7 +26,7 @@ namespace MGOBankApp.Areas.Employee.Controllers
         }
 
 
-        [Authorize(Roles = SD.Role_CreditEmployee)]
+        [Authorize(Roles = "CreditEmployee")]
         [HttpGet("CreditServices")]
         public async Task<IActionResult> CreditServices()
         {
@@ -36,7 +36,7 @@ namespace MGOBankApp.Areas.Employee.Controllers
             return View(allCredits);
         }
 
-        [Authorize(Roles = SD.Role_TaxEmployee)]
+        [Authorize(Roles = "TaxEmployee")]
         [HttpGet("TaxServices")]
         public async Task<IActionResult> TaxServices()
         {

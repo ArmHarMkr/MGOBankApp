@@ -3,7 +3,7 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 <style>
     /* Your custom styles for ATM interface */
     .form-control {
@@ -45,14 +45,14 @@
 </style>
 
 <form asp-action="CashIn" asp-controller="ATM" asp-area="ATM">
-    <input class="form-control" style="width:179px; display:inline;" asp-for="@Model.AccessibleMoney" placeholder="Add to balance" />
+    <input class="form-control" style="width:179px; display:inline;" value="@null"asp-for="@Model.AccessibleMoney" placeholder="Add to balance" />
     <button class="btn btn-success btn-sm" type="submit">Add</button>
 </form>
 
 <hr />
 
 <form asp-action="WithdrawCash" asp-controller="ATM" asp-area="ATM">
-    <input class="form-control" style="width:179px; display:inline;" asp-for="@Model.AccessibleMoney" placeholder="Withdraw from balance" />
+    <input class="form-control" value="@null" style="width:179px; display:inline;" asp-for="@Model.AccessibleMoney" placeholder="Withdraw from balance" />
     <button class="btn btn-success btn-sm" type="submit">Withdraw</button>
 </form>
 @* 
@@ -64,9 +64,9 @@
 </form> *@
 
 <div class="mk-balance">
-    <div id="balance">******** AMD</div>
-    <div id="open_balance">@Model.AccessibleMoney AMD</div>
-    <i id="toggleButton" class="eye-icon zmdi zmdi-eye"></i>
+    <div style="display:inline-block"id="balance">******** AMD</div>
+    <div style="display:none;"id="open_balance">@Model.AccessibleMoney AMD</div>
+    <i style="transform:none; position:static;"id="toggleButton" class="eye-icon zmdi zmdi-eye"></i>
 </div>
 
 <script>
@@ -88,11 +88,5 @@
         }
     });
 
-    balanceDiv.addEventListener('mouseenter', function () {
-        openBalanceDiv.classList.remove('hidden');
-    });
-
-    balanceDiv.addEventListener('mouseleave', function () {
-        openBalanceDiv.classList.add('hidden');
-    });
+    
 </script>
