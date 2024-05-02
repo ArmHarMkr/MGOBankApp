@@ -66,7 +66,6 @@ namespace MGOBankAp.Controllers
             AppUser currentUser = await _userManager.GetUserAsync(User);
             if (currentUser != null && currentUser.CardEntity == null)
             {
-
                 // Create a new card for the user
                 currentUser.CardEntity = new CardEntity
                 {
