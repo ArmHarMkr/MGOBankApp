@@ -7,6 +7,8 @@ using MGOBank.Service.Interfaces;
 using MGOBank.Service.Implementations;
 using Microsoft.AspNetCore.Identity;
 using MGOBankApp.Domain.Roles;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
@@ -31,11 +33,30 @@ builder.Services.AddTransient<ICardNumberGenerator, CardNumberGenerator>();
 //Adding background Service
 builder.Services.AddHostedService<OrderTicketUpdateService>();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-var app = builder.Build();
+/*
+builder.Services.AddLocalization(options =>
+{
+    options.ResourcesPath = "Resources";
+});
 
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
+    {
+        new CultureInfo("en-US")
+    };
+
+    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-US");
+    options.SupportedUICultures = supportedCultures;
+});
+
+app.UseRequestLocalization();*/
+
+var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

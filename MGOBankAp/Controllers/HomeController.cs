@@ -1,5 +1,4 @@
 using MGOBank.Service.Interfaces;
-using MGOBankAp.Models;
 using MGOBankApp.DAL.Data;
 using MGOBankApp.DAL.Repository;
 using MGOBankApp.Domain.Entity;
@@ -8,10 +7,7 @@ using MGOBankApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Elfie.Model.Tree;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using System.Text;
 
 namespace MGOBankAp.Controllers
 {
@@ -55,7 +51,7 @@ namespace MGOBankAp.Controllers
             transactionVM.PinCodeChangeActions = _db.Transactions
                                                                  .Include(a => a.AppUser)
                                                                  .Where(a => a.TransactionType == TransactionType.ChangePinCode);
-            transactionVM.AllTransactions = _db.Transactions.Include(a => a.AppUser).OrderBy(c => c.ActionTime);
+            transactionVM.AllTransactions = _db.Transactions.Include(a => a.AppUser).Where(a => a.AppUser == currentUser).OrderBy(c => c.ActionTime);
             ViewBag.PaymentSystems = Enum.GetNames(typeof(PaymentSystem)).ToList();
             return View(transactionVM);
         }
