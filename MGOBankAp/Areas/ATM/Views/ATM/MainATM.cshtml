@@ -59,6 +59,18 @@
     .hidden {
         display: none;
     }
+    #div1{
+        width:700px;
+        height:700px;
+        background-color:red;
+    }
+
+    #div2 {
+        width: 700px;
+        height: 700px;
+        background-color: green;
+        display:none;
+    }
 </style>
 
 <form asp-action="CashIn" asp-controller="ATM" asp-area="ATM">
@@ -85,7 +97,17 @@
     <div style="display:none;"id="open_balance">@Model.AccessibleMoney AMD</div>
     <i style="transform:none; position:static;"id="toggleButton" class="eye-icon zmdi zmdi-eye"></i>
 </div>
+<div class="atm-container">
+    <div id="div1">
+        <p>safsafas</p>
+        <p>safsafas</p>
+        <p>safsafas</p>
+        <p>safsafas</p>
 
+    </div>
+    <div id="div2"><p>asvkla;</p></div>
+    <button onclick="changeDiv()" class="btn btn-primary">sumbit</button>
+</div>
 <script>
     const balanceDiv = document.getElementById('balance');
     const openBalanceDiv = document.getElementById('open_balance');
@@ -104,6 +126,12 @@
             eyeIcon.classList.add('zmdi-eye');
         }
     });
+    function changeDiv(){
+        let div1 = document.getElementById("div1");
+        let div2 = document.getElementById("div2");
+        div1.style.display = 'none';
+        div2.style.display = 'block';
+    }
 
     
 </script>
