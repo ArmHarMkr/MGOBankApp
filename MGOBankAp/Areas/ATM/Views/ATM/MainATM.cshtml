@@ -1,80 +1,82 @@
 ﻿@model CardEntity
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
 @if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert-success" role="alert">
-        @TempData["SuccessMessage"]
-    </div>
+	<div class="alert alert-success" role="alert">
+		@TempData["SuccessMessage"]
+	</div>
 }
 
 @if (TempData["ErrorMessage"] != null)
 {
-    <div class="alert alert-danger" role="alert">
-        @TempData["ErrorMessage"]
-    </div>
+	<div class="alert alert-danger" role="alert">
+		@TempData["ErrorMessage"]
+	</div>
 }
 
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 <style>
-    /* Your custom styles for ATM interface */
-    .form-control {
-        margin-bottom: 10px;
-    }
+	/* Your custom styles for ATM interface */
+	.form-control {
+		margin-bottom: 10px;
+	}
 
-    .btn {
-        margin-bottom: 10px;
-    }
+	.btn {
+		margin-bottom: 10px;
+	}
 
-    .mk-balance {
-        position: relative;
-        display: inline-block;
-        font-size: 18px;
-    }
+	.mk-balance {
+		position: relative;
+		display: inline-block;
+		font-size: 18px;
+	}
 
-    #balance {
-        font-size: 16px;
-        cursor: pointer;
-    }
+	#balance {
+		font-size: 16px;
+		cursor: pointer;
+	}
 
-    #open_balance {
-        opacity: 0.3;
-        font-size: 12px;
-        cursor: pointer;
-    }
+	#open_balance {
+		opacity: 0.3;
+		font-size: 12px;
+		cursor: pointer;
+	}
 
-    .eye-icon {
-        position: absolute;
-        top: 50%;
-        right: 10px;
-        transform: translateY(-50%);
-        cursor: pointer;
-    }
+	.eye-icon {
+		position: absolute;
+		top: 50%;
+		right: 10px;
+		transform: translateY(-50%);
+		cursor: pointer;
+	}
 
-    .hidden {
-        display: none;
-    }
-    
-    
+	.hidden {
+		display: none;
+	}
+
+	.m-b-100 {
+		margin-bottom: 100px;
+	}
 </style>
 
 <form asp-action="CashIn" asp-controller="ATM" asp-area="ATM">
-    <input class="form-control" style="width:179px; display:inline;" value="@null" asp-for="@Model.AccessibleMoney" min="100" placeholder="Add to balance" />
-    <button class="btn btn-success btn-sm" type="submit">Add</button>
+	<input class="form-control" style="width:179px; display:inline;" value="@null" asp-for="@Model.AccessibleMoney" min="100" placeholder="Add to balance" />
+	<button class="btn btn-success btn-sm" type="submit">Add</button>
 </form>
 
 <hr />
 
 <form asp-action="WithdrawCash" asp-controller="ATM" asp-area="ATM">
-    <input class="form-control" value="@null" style="width:179px; display:inline;" min="100" asp-for="@Model.AccessibleMoney" placeholder="Withdraw from balance" />
-    <button class="btn btn-success btn-sm" type="submit">Withdraw</button>
+	<input class="form-control" value="@null" style="width:179px; display:inline;" min="100" asp-for="@Model.AccessibleMoney" placeholder="Withdraw from balance" />
+	<button class="btn btn-success btn-sm" type="submit">Withdraw</button>
 </form>
-@* 
+@*
 <hr />
 
 <form asp-action="ChangePinCode" asp-controller="ATM" asp-area="ATM">
@@ -83,35 +85,93 @@
 </form> *@
 
 <div class="mk-balance">
-    <div style="display:inline-block"id="balance">******** AMD</div>
-    <div style="display:none;"id="open_balance">@Model.AccessibleMoney AMD</div>
-    <i style="transform:none; position:static;"id="toggleButton" class="eye-icon zmdi zmdi-eye"></i>
+	<div style="display:inline-block" id="balance">******** AMD</div>
+	<div style="display:none;" id="open_balance">@Model.AccessibleMoney AMD</div>
+	<i style="transform:none; position:static;" id="toggleButton" class="eye-icon zmdi zmdi-eye"></i>
 </div>
-    <div style="height:500px; background-color:red;"class="container">
-        <div style="width:100%;height:100%;" id="cardInput" class="d-flex justify-content-center align-items-center">
-            <input style="width:30%" class="form-control" type="number" placeholder="Input card number"/>
-            <button class="btn btn-success">Insert</button>
-        </div>
-    </div>
+<div style="height:500px; background-color:red;" class="container">
+	@* input card *@
+	<div style="width:100%;height:100%;display:flex;" id="cardInput" class="justify-content-center align-items-center">
+		<input maxlength="16" required style="width:30%" class="form-control" type="number" placeholder="Input card number" />
+		<button class="btn btn-success" onclick="goToMain(document.getElementById('cardInput'))">Insert</button>
+	</div>
+	@{
+		if (/* cart-i stugum bazayum */true)
+		{
+
+		}
+		else
+		{
+			
+		}
+	}
+	@* main *@
+	<div id="main" style="width:100%;height:100%;">
+		<div class="row m-b-100">
+			<div class="col-4"></div>
+			<div class="col-4"></div>
+			<div class="col-4 d-flex justify-content-end"></div>
+		</div>
+		<div class="row m-b-100">
+			<div class="col-4"></div>
+			<div class="col-4"></div>
+			<div class="col-4 d-flex justify-content-end"><button class="btn btn-info text-light">Change PIN</button></div>
+		</div>
+		<div class="row m-b-50">
+			<div class="col-4"></div>
+			<div class="col-4"></div>
+			<div class="col-4 d-flex justify-content-end"><button onclick="goToTransactions(document.getElementById('main'))" class="btn btn-info text-light">Transactions</button></div>
+		</div>
+	</div>
+
+		@* transactions *@
+		<div id="transactions" style="width:100%;height:100%;">
+			<div class="row m-b-100">
+				<div class="col-4"></div>
+				<div class="col-4"></div>
+				<div class="col-4 d-flex justify-content-end"><button class="btn btn-info text-light">Check Balance</button></div>
+			</div>
+			<div class="row m-b-100">
+				<div class="col-4"></div>
+				<div class="col-4"></div>
+				<div class="col-4 d-flex justify-content-end"><button class="btn btn-info text-light">Withdraw</button></div>
+			</div>
+			<div class="row m-b-50">
+				<div class="col-4"></div>
+				<div class="col-4"></div>
+				<div class="col-4 d-flex justify-content-end"><button class="btn btn-info text-light">Cancel</button></div>
+			</div>
+		</div>
+</div>
 <script>
-    const balanceDiv = document.getElementById('balance');
-    const openBalanceDiv = document.getElementById('open_balance');
-    const eyeIcon = document.getElementById('toggleButton');
+	const balanceDiv = document.getElementById('balance');
+	const openBalanceDiv = document.getElementById('open_balance');
+	const eyeIcon = document.getElementById('toggleButton');
 
-    eyeIcon.addEventListener('click', function () {
-        if (balanceDiv.style.display === 'inline') {
-            balanceDiv.style.display = 'none';
-            openBalanceDiv.style.display = 'inline';
-            eyeIcon.classList.remove('zmdi-eye');
-            eyeIcon.classList.add('zmdi-eye-off');
-        } else {
-            balanceDiv.style.display = 'inline';
-            openBalanceDiv.style.display = 'none';
-            eyeIcon.classList.remove('zmdi-eye-off');
-            eyeIcon.classList.add('zmdi-eye');
-        }
-    });
-    
+	eyeIcon.addEventListener('click', function () {
+		if (balanceDiv.style.display === 'inline') {
+			balanceDiv.style.display = 'none';
+			openBalanceDiv.style.display = 'inline';
+			eyeIcon.classList.remove('zmdi-eye');
+			eyeIcon.classList.add('zmdi-eye-off');
+		} else {
+			balanceDiv.style.display = 'inline';
+			openBalanceDiv.style.display = 'none';
+			eyeIcon.classList.remove('zmdi-eye-off');
+			eyeIcon.classList.add('zmdi-eye');
+		}
+	});
+	var mainDiv = documentgetElementById("main");
+	var transactionsDiv = documentgetElementById("transactions");
+	function goToMain(thisDiv) {
+		thisDiv.style.display = "none";
+		mainDiv.style.display = "inline"
+	}
+	function goToTransactions(thisDiv) {
+		thisDiv.style.display = "none";
+		transactionsDiv.style.display = "inline";
+	}
 
-    
+
+
 </script>
