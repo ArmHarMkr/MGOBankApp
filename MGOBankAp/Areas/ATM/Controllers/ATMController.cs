@@ -60,9 +60,16 @@ namespace MGOBankApp.Areas.ATM.Controllers
         {
             AppUser exampleUser = await _userManager.GetUserAsync(User);
             AppUser currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
-            CardEntity currentCard = currentUser.CardEntity;
-            currentCard.AccessibleMoney = currentUser.CardEntity.AccessibleMoney;
+            try
+            {
+                CardEntity currentCard = currentUser.CardEntity;
+                currentCard.AccessibleMoney = currentUser.CardEntity.AccessibleMoney;
 
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+            }
             return View(currentUser.CardEntity);
         }
 

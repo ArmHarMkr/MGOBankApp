@@ -98,6 +98,7 @@ namespace MGOBankApp.Areas.Admin.Controllers
         }
 
         [HttpPost("DeleteUser")]
+        [Authorize(Roles = SD.Role_Admin)]
         public async Task<IActionResult> DeleteUser(string? id)
         {
             try
@@ -111,9 +112,11 @@ namespace MGOBankApp.Areas.Admin.Controllers
                         if (deletingUser.CardEntity != null)
                         {
                             CardEntity userCard = await _db.Cards.FirstOrDefaultAsync(c => c.CardId == deletingUser.CardEntity.CardId);
+                            IEnumerable<TransactionEntity> userActions = _db.Transactions.Where(a => a.AppUser == currentUser);
                             if (userCard != null)
                             {
-                                _db.Cards.Remove(userCard);
+                                _unitOfWork.Card.Remove(userCard);
+                                _unitOfWork.Transaction.RemoveRange(userActions);
                                 await _db.SaveChangesAsync();
                             }
                         }

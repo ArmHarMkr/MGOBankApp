@@ -32,7 +32,8 @@ namespace MGOBankApp.Areas.Employee.Controllers
         {
             IEnumerable<OrderTicketEntity> allCredits = _db.OrderTickets.Include(o => o.AppUser)
                                                                         .Where(o => o.OrderService == Domain.Enum.Services.Credit)
-                                                                        .Where(o => o.IsDone == false);
+                                                                        .Where(o => o.IsDone == false)
+                                                                        .OrderBy(o => o.OrderNumber);
             return View(allCredits);
         }
 
@@ -42,7 +43,8 @@ namespace MGOBankApp.Areas.Employee.Controllers
         {
             IEnumerable<OrderTicketEntity> allTaxes = _db.OrderTickets.Include(o => o.AppUser)
                                                                       .Where(o => o.OrderService == Domain.Enum.Services.Tax)
-                                                                      .Where(o => o.IsDone == false);
+                                                                      .Where(o => o.IsDone == false)
+                                                                      .OrderBy(o => o.OrderNumber);
             return View(allTaxes);
         }
 
@@ -52,7 +54,8 @@ namespace MGOBankApp.Areas.Employee.Controllers
         {
             IEnumerable<OrderTicketEntity> allBills = _db.OrderTickets.Include(o => o.AppUser)
                                                                         .Where(o => o.OrderService == Domain.Enum.Services.Bill)
-                                                                        .Where(o => o.IsDone == false);
+                                                                        .Where(o => o.IsDone == false)
+                                                                        .OrderBy(o => o.OrderNumber);
             return View(allBills);
         }
 
@@ -60,7 +63,7 @@ namespace MGOBankApp.Areas.Employee.Controllers
         [HttpPost("CheckOrder")]
         public async Task<IActionResult> CheckOrder()
         {
-            OrderTicketEntity lastOrder = await _db.OrderTickets.Where(o => o.IsDone == false).OrderByDescending(c => c.OrderDate).LastAsync();
+            OrderTicketEntity lastOrder = await _db.OrderTickets.Where(o => o.IsDone == false).OrderByDescending(c => c.OrderNumber).LastAsync();
             if (lastOrder == null) { return BadRequest("No ticket found"); }
 
             lastOrder.IsDone = true;
