@@ -1,4 +1,5 @@
-﻿using MGOBankApp.DAL.Data;
+﻿using MGOBank.Service.Interfaces;
+using MGOBankApp.DAL.Data;
 using MGOBankApp.DAL.Repository;
 using MGOBankApp.Domain.Entity;
 using Microsoft.AspNetCore.Authorization;
@@ -16,12 +17,14 @@ namespace MGOBankApp.Areas.ATM.Controllers
         private readonly AppDbContext _db;
         private readonly UserManager<AppUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICardTransactions _cardTransactions;
 
-        public ATMController(AppDbContext db, UserManager<AppUser> userManager, IUnitOfWork unitOfWork)
+        public ATMController(AppDbContext db, UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ICardTransactions cardActions)
         {
             _db = db;
             _userManager = userManager;
             _unitOfWork = unitOfWork;
+            _cardTransactions = cardActions;
         }
 
 /*        [HttpGet("LoginATM")]
@@ -82,23 +85,16 @@ namespace MGOBankApp.Areas.ATM.Controllers
             return View(currentCard);
         }
 
-/*        [HttpPost("ChangePinCode")]
+        [HttpPost("ChangePinCode")]
         public async Task<IActionResult> ChangePinCode(CardEntity cardEntity)
         {
             AppUser exampleUser = await _userManager.GetUserAsync(User);
             AppUser currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
             CardEntity currentCard = currentUser.CardEntity;
             if (currentCard == null) { return BadRequest("No card found"); }
-
-            currentCard.PinCode = cardEntity.PinCode;
-            _db.Cards.Update(currentCard);
-            TransactionEntity changePinAction = new TransactionEntity();
-            changePinAction.AppUser = currentUser;
-            changePinAction.TransactionType = Domain.Enum.TransactionType.Withdraw;
-            await _unitOfWork.Transaction.Add(changePinAction);
-            await _unitOfWork.Save();
+            await _cardTransactions.ChangePinCode(cardEntity, currentUser);
             return View("MainATM");
-        }*/
+        }
 
         [HttpPost("WithdrawCash")]
         public async Task<IActionResult> WithdrawCash(CardEntity cardEntity)
@@ -114,15 +110,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
                 {
                     if (currentCard.AccessibleMoney > cardEntity.AccessibleMoney)
                     {
-                        currentCard.AccessibleMoney -= cardEntity.AccessibleMoney;
-                        _db.Cards.Update(currentCard);
-                        TransactionEntity withdrawAction = new TransactionEntity();
-                        withdrawAction.AppUser = currentUser;
-                        withdrawAction.TransactionType = Domain.Enum.TransactionType.Withdraw;
-                        withdrawAction.ChangingMoney = cardEntity.AccessibleMoney;
-                        await _unitOfWork.Transaction.Add(withdrawAction);
-                        await _unitOfWork.Save();
-
+                        await _cardTransactions.WithdrawCash(currentCard, currentUser);
                         TempData["SuccessMessage"] = "Withdrawed successfully";
                         return RedirectToAction("MainATM");
                     }

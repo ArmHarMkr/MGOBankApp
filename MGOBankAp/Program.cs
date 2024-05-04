@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using MGOBankApp.Domain.Roles;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
@@ -26,6 +27,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IOrderTicketRepository, OrderTicketRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<ICardTransactions, CardTransactions>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ILunaCounter, LunaCounter>();
 builder.Services.AddSingleton<ICVVGenerator, CVVGenerator>();
@@ -39,8 +41,27 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddLocalization(options =>
+{
+    options.ResourcesPath = "Resources";
+});
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
+    {
+        new CultureInfo("hy-AM")
+    };
+
+    options.DefaultRequestCulture = new RequestCulture("hy-AM");
+    options.SupportedCultures = supportedCultures;
+});
+
 
 var app = builder.Build();
+app.UseRequestLocalization();
+
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
