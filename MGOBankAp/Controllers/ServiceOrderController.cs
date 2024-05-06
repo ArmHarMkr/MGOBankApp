@@ -53,11 +53,11 @@ namespace MGOBankApp.Controllers
             AppUser currentUser = await _userManager.GetUserAsync(User);
             IEnumerable<OrderTicketEntity> allBills = await _db.OrderTickets
                                                                .Where(o => o.OrderService == Domain.Enum.Services.Bill)
-                                                               .Where(o => o.IsDone)
+                                                               .Where(o => o.IsDone == false)
                                                                .ToListAsync();
             try
             {
-                if(allBills.Count() <= 10)
+                if(allBills.Count() < 10)
                 {
                     await _orderTicket.BillService(currentUser);
                 }
@@ -79,11 +79,11 @@ namespace MGOBankApp.Controllers
             AppUser currentUser = await _userManager.GetUserAsync(User);
             IEnumerable<OrderTicketEntity> allCredits = await _db.OrderTickets
                                                                .Where(o => o.OrderService == Domain.Enum.Services.Credit)
-                                                               .Where(o => o.IsDone)
+                                                               .Where(o => o.IsDone == false)
                                                                .ToListAsync();
             try
             {
-                if (allCredits.Count() <= 10)
+                if (allCredits.Count() < 10)
                 {
                     await _orderTicket.CreditService(currentUser);
                 }
@@ -105,11 +105,11 @@ namespace MGOBankApp.Controllers
             AppUser currentUser = await _userManager.GetUserAsync(User);
             IEnumerable<OrderTicketEntity> allTaxes = await _db.OrderTickets
                                                                .Where(o => o.OrderService == Domain.Enum.Services.Tax)
-                                                               .Where(o => o.IsDone)
+                                                               .Where(o => o.IsDone == false)
                                                                .ToListAsync();
             try
             {
-                if (allTaxes.Count() <= 10)
+                if (allTaxes.Count() < 10)
                 {
                     await _orderTicket.TaxService(currentUser);
                 }

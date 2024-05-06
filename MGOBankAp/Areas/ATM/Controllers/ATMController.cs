@@ -117,7 +117,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
                 {
                     if (currentCard.AccessibleMoney > cardEntity.AccessibleMoney)
                     {
-                        await _cardTransactions.WithdrawCash(currentCard, currentUser);
+                        await _cardTransactions.WithdrawCash(cardEntity, currentUser);
                         TempData["SuccessMessage"] = "Withdrawed successfully";
                         return RedirectToAction("MainATM");
                     }
