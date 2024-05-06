@@ -89,24 +89,14 @@
 	<div style="display:none;" id="open_balance">@Model.AccessibleMoney AMD</div>
 	<i style="transform:none; position:static;" id="toggleButton" class="eye-icon zmdi zmdi-eye"></i>
 </div>
-<div style="height:500px; background-color:red;" class="container">
-	@* input card *@
+@*  <div style="height:500px; background-color:red;" class="container">
 	<div style="width:100%;height:100%;display:flex;" id="cardInput" class="justify-content-center align-items-center">
 		<input maxlength="16" required style="width:30%" class="form-control" type="number" placeholder="Input card number" />
 		<button class="btn btn-success" onclick="goToMain(document.getElementById('cardInput'))">Insert</button>
-	</div>
-	@{
-		if (/* cart-i stugum bazayum */true)
-		{
+	</div>  *@
 
-		}
-		else
-		{
-			
-		}
-	}
 	@* main *@
-	<div id="main" style="width:100%;height:100%;">
+	@* <div id="main" style="width:100%;height:100%;">
 		<div class="row m-b-100">
 			<div class="col-4"></div>
 			<div class="col-4"></div>
@@ -122,10 +112,10 @@
 			<div class="col-4"></div>
 			<div class="col-4 d-flex justify-content-end"><button onclick="goToTransactions(document.getElementById('main'))" class="btn btn-info text-light">Transactions</button></div>
 		</div>
-	</div>
+	</div> *@
 
 		@* transactions *@
-		<div id="transactions" style="width:100%;height:100%;">
+@* 		<div id="transactions" style="width:100%;height:100%;">
 			<div class="row m-b-100">
 				<div class="col-4"></div>
 				<div class="col-4"></div>
@@ -141,9 +131,9 @@
 				<div class="col-4"></div>
 				<div class="col-4 d-flex justify-content-end"><button class="btn btn-info text-light">Cancel</button></div>
 			</div>
-		</div>
-</div>
-<script>
+		</div> *@
+@* </div>
+ *@<script>
 	const balanceDiv = document.getElementById('balance');
 	const openBalanceDiv = document.getElementById('open_balance');
 	const eyeIcon = document.getElementById('toggleButton');
