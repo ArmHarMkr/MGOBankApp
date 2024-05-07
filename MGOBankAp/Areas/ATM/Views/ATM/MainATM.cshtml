@@ -76,6 +76,14 @@
 	<input class="form-control" value="@null" style="width:179px; display:inline;" min="100" asp-for="@Model.AccessibleMoney" placeholder="Withdraw from balance" />
 	<button class="btn btn-success btn-sm" type="submit">Withdraw</button>
 </form>
+
+
+<a asp-action="CashIn" asp-controller="ATM" asp-area="ATM">WithDraw cash</a>
+<a asp-action="WithdrawCash" asp-controller="ATM" asp-area="ATM">WithDraw cash</a>
+<a asp-action="ChangePinCode" asp-controller="ATM" asp-area="ATM">Change Pin Code</a>
+<a asp-action="ShowBalance" asp-controller="ATM" asp-area="ATM">Show Balance</a>
+
+
 @*
 <hr />
 
