@@ -109,7 +109,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
             AppUser exampleUser = await _userManager.GetUserAsync(User);
             AppUser currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
             CardEntity currentCard = currentUser.CardEntity;
-            if (currentCard == null) { return BadRequest("No card found"); }
+            if (currentCard == null) { return NotFound("No card found"); }
 
             try
             {
@@ -128,7 +128,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
                     }
 
                 }
-                return BadRequest("No user or card found");
+                return NotFound("No user or card found");
             }
             catch (Exception ex)
             {
@@ -160,7 +160,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
                     TempData["SuccessMessage"] = "Balance was added successfully";
                     return RedirectToAction("MainATM");
                 }
-                return BadRequest("No user or card found");
+                return NotFound("No user or card found");
 
             }
             catch (Exception ex)
