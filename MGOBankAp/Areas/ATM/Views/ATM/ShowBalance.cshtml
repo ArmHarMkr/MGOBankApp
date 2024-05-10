@@ -4,7 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <p>@Model.CardId</p>
 <p>@Model.CardNum</p>
 <p>@Model.AccessibleMoney</p>
 <p>@Model.PinCode</p>
+
+<a asp-action="MainATM" asp-controller="ATM" asp-area="ATM">Go Back</a>

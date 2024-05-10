@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace MGOBankApp.Areas.ATM.Controllers
 {
@@ -63,7 +64,6 @@ namespace MGOBankApp.Areas.ATM.Controllers
             try
             {
                 CardEntity currentCard = currentUser.CardEntity;
-                currentCard.AccessibleMoney = currentUser.CardEntity.AccessibleMoney;
 
             }
             catch (Exception ex)
@@ -73,21 +73,25 @@ namespace MGOBankApp.Areas.ATM.Controllers
             return View(currentUser.CardEntity);
         }
 
-        [HttpGet("ChangePinCode")]
-        public async Task<IActionResult> ChangePinCode(string? id)
+        [HttpGet("ShowBalance")]
+        public async Task<IActionResult> ShowBalance()
         {
-            CardEntity? currentCard = _unitOfWork.Card.Get(c => c.CardId == id);
+			AppUser? exampleUser = await _userManager.GetUserAsync(User);
+			AppUser? currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
+			CardEntity currentCard = currentUser.CardEntity;
+            return View(currentCard);
+		}
+
+		[HttpGet("ChangePinCode")]
+        public async Task<IActionResult> ChangePinCode()
+        {
             AppUser? exampleUser = await _userManager.GetUserAsync(User);
             AppUser? currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
-            if (currentUser?.CardEntity != currentCard)
-            {
-                return BadRequest("DO NOT CHANGE OTHERS CARD PIN CODE");
-            }
-
+            CardEntity currentCard = currentUser.CardEntity;
             if (currentCard == null)
             {
                 TempData["ErrorMessage"] = "No card found";
-                return View("MainATM");
+                return BadRequest("No card found");
             }
             return View(currentCard);
         }
@@ -100,7 +104,8 @@ namespace MGOBankApp.Areas.ATM.Controllers
             CardEntity currentCard = currentUser.CardEntity;
             if (currentCard == null) { return BadRequest("No card found"); }
             await _cardTransactions.ChangePinCode(cardEntity, currentUser);
-            return View("MainATM");
+            await _unitOfWork.Save();
+            return RedirectToAction("MainATM");
         }
 
         [HttpPost("WithdrawCash")]
@@ -109,7 +114,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
             AppUser exampleUser = await _userManager.GetUserAsync(User);
             AppUser currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
             CardEntity currentCard = currentUser.CardEntity;
-            if (currentCard == null) { return BadRequest("No card found"); }
+            if (currentCard == null) { return NotFound("No card found"); }
 
             try
             {
@@ -128,7 +133,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
                     }
 
                 }
-                return BadRequest("No user or card found");
+                return NotFound("No user or card found");
             }
             catch (Exception ex)
             {
@@ -160,7 +165,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
                     TempData["SuccessMessage"] = "Balance was added successfully";
                     return RedirectToAction("MainATM");
                 }
-                return BadRequest("No user or card found");
+                return NotFound("No user or card found");
 
             }
             catch (Exception ex)
