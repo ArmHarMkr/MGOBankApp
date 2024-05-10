@@ -1,0 +1,12 @@
+﻿@model CardEntity
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<form asp-action="ChangePinCode" asp-controller="ATM">
+    <input asp-for="@Model.AccessibleMoney" placeholder="Type withdraw money" />
+    <span asp-validation-for="AccessibleMoney" class="text-danger small"></span>
+    <button type="submit">Withdraw Cash</button>
+</form>
