@@ -31,6 +31,7 @@ builder.Services.AddScoped<ICardTransactions, CardTransactions>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ILunaCounter, LunaCounter>();
 builder.Services.AddSingleton<ICVVGenerator, CVVGenerator>();
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddTransient<ICardNumberGenerator, CardNumberGenerator>();
 
 //Adding background Service

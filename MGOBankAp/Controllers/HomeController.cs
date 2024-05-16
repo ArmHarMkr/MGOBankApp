@@ -20,7 +20,7 @@ namespace MGOBankAp.Controllers
         private readonly AppDbContext _db;
         private readonly UserManager<AppUser> _userManager;
         private readonly ICVVGenerator _cvvGenerator;
-
+        private readonly IEmailSender _emailSender;
 
         public HomeController(
             ILogger<HomeController> logger,
@@ -28,7 +28,8 @@ namespace MGOBankAp.Controllers
             AppDbContext db,
             UserManager<AppUser> userManager,
             ICardNumberGenerator cardNumberGenerator,
-            ICVVGenerator cvvGenerator
+            ICVVGenerator cvvGenerator,
+            IEmailSender emailSender
             )
         {
             _logger = logger;
@@ -37,6 +38,7 @@ namespace MGOBankAp.Controllers
             _userManager = userManager;
             _cardNumberGenerator = cardNumberGenerator;
             _cvvGenerator = cvvGenerator;
+            _emailSender = emailSender;
         }
 
         public async Task<IActionResult> Index()
@@ -82,6 +84,7 @@ namespace MGOBankAp.Controllers
                     PaymentSystem = (PaymentSystem)Enum.Parse(typeof(PaymentSystem), paymentSystem),
                     CardCVV = _cvvGenerator.GenerateCVV()
                 };
+                _emailSender.SendEmail(currentUser.Email, "New Card Created", "<html><body>New Card Created</body></html>", true);
                 await _userManager.UpdateAsync(currentUser);
             }
             return RedirectToAction("Index");
