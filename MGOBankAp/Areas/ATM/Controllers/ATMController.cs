@@ -19,13 +19,15 @@ namespace MGOBankApp.Areas.ATM.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICardTransactions _cardTransactions;
+        private readonly IEmailSender _emailSender;
 
-        public ATMController(AppDbContext db, UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ICardTransactions cardActions)
+        public ATMController(AppDbContext db, UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ICardTransactions cardActions, IEmailSender emailSender)
         {
             _db = db;
             _userManager = userManager;
             _unitOfWork = unitOfWork;
             _cardTransactions = cardActions;
+            _emailSender = emailSender;
         }
 
 /*        [HttpGet("LoginATM")]
@@ -64,6 +66,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
             try
             {
                 CardEntity currentCard = currentUser.CardEntity;
+                _emailSender.SendEmail(currentUser.Email, "Log in to your card", $"<html><body><a href={"https://localhost:7160/ATM/ATM"}>Go to ATM app</a></body></html>", true);
 
             }
             catch (Exception ex)
@@ -102,6 +105,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
             AppUser exampleUser = await _userManager.GetUserAsync(User);
             AppUser currentUser = await _db.Users.Include(u => u.CardEntity).FirstOrDefaultAsync(u => u.Id == exampleUser.Id);
             CardEntity currentCard = currentUser.CardEntity;
+            _emailSender.SendEmail(currentUser.Email, "Changed Pin Code", "<html><body>You PinCode was changed</body></html>", true);
             if (currentCard == null) { return BadRequest("No card found"); }
             await _cardTransactions.ChangePinCode(cardEntity, currentUser);
             await _unitOfWork.Save();
@@ -124,6 +128,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
                     {
                         await _cardTransactions.WithdrawCash(cardEntity, currentUser);
                         TempData["SuccessMessage"] = "Withdrawed successfully";
+                        _emailSender.SendEmail(currentUser.Email, "Withdraw cash", "<html><body>Withdrawed successfully</body></html>", true);
                         return RedirectToAction("MainATM");
                     }
                     else
@@ -161,7 +166,7 @@ namespace MGOBankApp.Areas.ATM.Controllers
                     cashInAction.ChangingMoney = cardEntity.AccessibleMoney;
                     await _unitOfWork.Transaction.Add(cashInAction);
                     await _unitOfWork.Save();
-
+                    _emailSender.SendEmail(currentUser.Email, "Cash In", "<html><body>Cashed in</body></html>", true);
                     TempData["SuccessMessage"] = "Balance was added successfully";
                     return RedirectToAction("MainATM");
                 }
